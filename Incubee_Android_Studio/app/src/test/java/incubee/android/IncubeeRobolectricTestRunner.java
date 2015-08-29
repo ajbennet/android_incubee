@@ -8,6 +8,10 @@ import org.robolectric.annotation.Config;
 import org.robolectric.manifest.AndroidManifest;
 import org.robolectric.res.Fs;
 
+/*
+    Customizing RobolectricTestRunner for our app.
+* */
+
 public class IncubeeRobolectricTestRunner extends RobolectricTestRunner{
     /**
      * Creates a runner to run {@code testClass}. Looks in your working directory for your AndroidManifest.xml file
