@@ -21,6 +21,6 @@ public class LoginActivityTest {
         LoginActivity loginActivity = Robolectric.setupActivity(LoginActivity.class);
         loginActivity.getWindow().findViewById(R.id.sign_in_button).performClick();
         ShadowHandler.idleMainLooper();
-        Assert.assertEquals(ShadowToast.getTextOfLatestToast(), "Signing In...");
+        Assert.assertEquals(ShadowToast.getTextOfLatestToast(), "User Signed out..");
     }
 }
