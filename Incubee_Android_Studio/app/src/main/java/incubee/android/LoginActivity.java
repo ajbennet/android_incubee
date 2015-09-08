@@ -18,7 +18,7 @@ import com.google.android.gms.plus.Plus;
 
 
 /**
- * Class that demonstates Google Login.
+ * Class that demonstrates Google Login.
  */
 public class LoginActivity extends AppCompatActivity implements
 GoogleApiClient.ConnectionCallbacks,
