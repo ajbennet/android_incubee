@@ -9,6 +9,8 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowHandler;
 import org.robolectric.shadows.ShadowToast;
 
+import incubee.android.activities.LoginActivity;
+
 /**
  * Test against LoginActivity.
  */

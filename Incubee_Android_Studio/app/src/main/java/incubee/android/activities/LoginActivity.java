@@ -1,12 +1,10 @@
-package incubee.android;
+package incubee.android.activities;
 
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +13,8 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+
+import incubee.android.R;
 
 
 /**
@@ -54,6 +54,8 @@ GoogleApiClient.OnConnectionFailedListener,
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
+
+
     }
 
 
@@ -71,27 +73,7 @@ GoogleApiClient.OnConnectionFailedListener,
         mGoogleApiClient.disconnect();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void onSignInClicked() {
         // User clicked the sign-in button, so begin the sign-in process and automatically
@@ -103,7 +85,18 @@ GoogleApiClient.OnConnectionFailedListener,
         Toast.makeText(getApplicationContext(),
                 "Signing In...",
                 Toast.LENGTH_SHORT).show();
+
+
+
     }
+
+    private void navigteNextScreen() {
+
+        HomeActivity.startActivity(this);
+
+        finish();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -124,13 +117,16 @@ GoogleApiClient.OnConnectionFailedListener,
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.sign_in_button) {
-            onSignInClicked();
+        switch(v.getId()){
+            case R.id.sign_in_button:
+                onSignInClicked();
+                break;
+            case R.id.sign_out_button:
+                default:
+                onSignOutClicked();
+                break;
         }
 
-        if (v.getId() == R.id.sign_out_button) {
-            onSignOutClicked();
-        }
     }
 
     private void onSignOutClicked() {
@@ -160,6 +156,8 @@ GoogleApiClient.OnConnectionFailedListener,
         Toast.makeText(getApplicationContext(),
                 "User Signed In..", Toast.LENGTH_SHORT).show();
 
+        navigteNextScreen();
+
     }
 
     @Override
@@ -175,8 +173,10 @@ GoogleApiClient.OnConnectionFailedListener,
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
 
         if (!mIsResolving && mShouldResolve) {
+            Log.d(TAG, "++trying to resolve");
             if (connectionResult.hasResolution()) {
                 try {
+                    Log.d(TAG, "++Starting resolution");
                     connectionResult.startResolutionForResult(this, RC_SIGN_IN);
                     mIsResolving = true;
                 } catch (IntentSender.SendIntentException e) {
@@ -187,6 +187,8 @@ GoogleApiClient.OnConnectionFailedListener,
             } else {
                 // Could not resolve the connection result, show the user an
                 // error dialog.
+
+                Log.e(TAG, "Failed to resolve");
                 showErrorDialog(connectionResult);
 
 
