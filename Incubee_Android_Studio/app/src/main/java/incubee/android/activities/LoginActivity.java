@@ -13,6 +13,7 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import incubee.android.R;
 
@@ -147,6 +148,22 @@ GoogleApiClient.OnConnectionFailedListener,
         // establish a service connection to Google Play services.
         Log.d(TAG, "onConnected:" + bundle);
         mShouldResolve = false;
+
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            String personPhoto = currentPerson.getImage().getUrl();
+            String personGooglePlusProfile = currentPerson.getUrl();
+
+            String data = new StringBuilder().append(" ").append(personName)
+                    .append(" ").append(personPhoto)
+                    .append(" ").append(personGooglePlusProfile).toString();
+
+            Log.d(TAG, data);
+
+        }else{
+            Log.d(TAG, "Unable to retrieve information ");
+        }
 
         // Show the signed-in UI
         showSignedInUI();
