@@ -2,4 +2,11 @@
     <string name="app_name">Incubee</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- Home Page Strings -->
+    <string name="tab_title_home">Home</string>
+    <string name="tab_title_search">Search</string>
+    <string name="tab_title_messages">Messages</string>
+    <string name="tab_title_contacts">Contacts</string>
 </resources>
