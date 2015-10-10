@@ -10,7 +10,7 @@ import services.apis.ISendLoginRequests;
  */
 public class Service {
 
-    public static ISendLoginRequests getLoginService(Client client, final String baseApiURL) {
+    public static ISendLoginRequests getService(Client client, final String baseApiURL) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseApiURL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -20,6 +20,25 @@ public class Service {
                         request.addHeader("Content-Type", "application/json");
                     }
                 });
+        if(client == null) {
+            builder.setClient(new DefaultClient());
+        } else {
+            builder.setClient(client);
+        }
+        return builder.build().create(ISendLoginRequests.class);
+    }
+
+    public static ISendLoginRequests getServiceWithNoInterceptor(Client client, final String baseURL) {
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setEndpoint(baseURL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLog(new RestAdapter.Log() {
+                    @Override
+                    public void log(String message) {
+                        System.out.println("RestAdapter log: "+message);
+                    }
+                });
+
         if(client == null) {
             builder.setClient(new DefaultClient());
         } else {
