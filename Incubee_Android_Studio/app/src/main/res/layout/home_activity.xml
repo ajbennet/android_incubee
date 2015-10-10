@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/root_view">
+
+
+    <View
+        android:id="@+id/section_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="#202020" />
+
+    <incubee.android.views.SlidingTabLayout
+        android:id="@+id/pager_tab_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_divider"
+        android:background="@color/dark_gray" />
+
+
+    <incubee.android.views.TabsFragmentPager
+        android:id="@+id/modules_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/progress_screen_container" />
+
+
+</LinearLayout>

@@ -1,117 +1,48 @@
 package incubee.android.activities;
 
-import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import incubee.android.R;
 
 
 /**
- * Class that demonstrates Google Login.
+ * Login Screen. Connects to Google Play Services Framework to let the user
+ * sign into the app using their Google Account.
  */
-public class LoginActivity extends AppCompatActivity implements
-GoogleApiClient.ConnectionCallbacks,
-GoogleApiClient.OnConnectionFailedListener,
+public class LoginActivity extends GSConnectionActivity implements
         View.OnClickListener{
 
     private static final String TAG = "LoginActivity";
 
-    /* Request code used to invoke sign in user interactions. */
-    private static final int RC_SIGN_IN = 0;
-
-    /* Client used to interact with Google APIs. */
-    private GoogleApiClient mGoogleApiClient;
-
-    /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
-
-    /* Should we automatically resolve ConnectionResults when possible? */
-    private boolean mShouldResolve = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        // Build GoogleApiClient with access to basic profile
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .build();
-
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
 
 
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mGoogleApiClient.connect();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-        mGoogleApiClient.disconnect();
-    }
-
-
-
-    private void onSignInClicked() {
-        // User clicked the sign-in button, so begin the sign-in process and automatically
-        // attempt to resolve any errors that occur.
-        mShouldResolve = true;
-        mGoogleApiClient.connect();
-
-        // Show a message to the user that we are signing in.
+    protected void onUserSignedIn(Person person) {
         Toast.makeText(getApplicationContext(),
-                "Signing In...",
-                Toast.LENGTH_SHORT).show();
+                "User Signed In..", Toast.LENGTH_SHORT).show();
 
-
-
+        navigateNextScreen();
     }
 
-    private void navigteNextScreen() {
+
+    private void navigateNextScreen() {
 
         HomeActivity.startActivity(this);
 
         finish();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-
-        if (requestCode == RC_SIGN_IN) {
-            // If the error resolution was not successful we should not resolve further.
-            if (resultCode != RESULT_OK) {
-                mShouldResolve = false;
-            }
-
-            mIsResolving = false;
-            mGoogleApiClient.connect();
-        }
     }
 
 
@@ -120,110 +51,13 @@ GoogleApiClient.OnConnectionFailedListener,
 
         switch(v.getId()){
             case R.id.sign_in_button:
-                onSignInClicked();
+                performSignIn();
                 break;
-            case R.id.sign_out_button:
-                default:
-                onSignOutClicked();
+            default:
                 break;
         }
 
     }
 
-    private void onSignOutClicked() {
-        // Clear the default account so that GoogleApiClient will not automatically
-        // connect in the future.
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-        }
 
-        showSignedOutUI();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // onConnected indicates that an account was selected on the device, that the selected
-        // account has granted any requested permissions to our app and that we were able to
-        // establish a service connection to Google Play services.
-        Log.d(TAG, "onConnected:" + bundle);
-        mShouldResolve = false;
-
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            String personName = currentPerson.getDisplayName();
-            String personPhoto = currentPerson.getImage().getUrl();
-            String personGooglePlusProfile = currentPerson.getUrl();
-
-            String data = new StringBuilder().append(" ").append(personName)
-                    .append(" ").append(personPhoto)
-                    .append(" ").append(personGooglePlusProfile).toString();
-
-            Log.d(TAG, data);
-
-        }else{
-            Log.d(TAG, "Unable to retrieve information ");
-        }
-
-        // Show the signed-in UI
-        showSignedInUI();
-    }
-
-    private void showSignedInUI() {
-        Toast.makeText(getApplicationContext(),
-                "User Signed In..", Toast.LENGTH_SHORT).show();
-
-        navigteNextScreen();
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        // Could not connect to Google Play Services.  The user needs to select an account,
-        // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
-        // ConnectionResult to see possible error codes.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-
-        if (!mIsResolving && mShouldResolve) {
-            Log.d(TAG, "++trying to resolve");
-            if (connectionResult.hasResolution()) {
-                try {
-                    Log.d(TAG, "++Starting resolution");
-                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-                    mIsResolving = true;
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(TAG, "Could not resolve ConnectionResult.", e);
-                    mIsResolving = false;
-                    mGoogleApiClient.connect();
-                }
-            } else {
-                // Could not resolve the connection result, show the user an
-                // error dialog.
-
-                Log.e(TAG, "Failed to resolve");
-                showErrorDialog(connectionResult);
-
-
-            }
-        } else {
-            // Show the signed-out UI
-            showSignedOutUI();
-        }
-
-    }
-
-    private void showSignedOutUI() {
-        Toast.makeText(getApplicationContext(),
-                "User Signed out..", Toast.LENGTH_SHORT).show();
-    }
-
-    private void showErrorDialog(ConnectionResult connectionResult) {
-        Toast.makeText(getApplicationContext(),
-                connectionResult.toString(), Toast.LENGTH_SHORT).show();
-    }
 }

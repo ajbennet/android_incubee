@@ -3,175 +3,228 @@ package incubee.android.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 import incubee.android.PlaceHolderFragment;
 import incubee.android.R;
+import incubee.android.views.SlidingTabLayout;
+import incubee.android.views.TabsFragmentPager;
 
-public class HomeActivity extends AppCompatActivity implements
-		GoogleApiClient.ConnectionCallbacks,
-		GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPageChangeListener {
 
+    private static final String TAG = "HomeActivity";
 
-	private static final String TAG = "HomeActivity";
+    private TabsFragmentPager mViewPager;
+    private ModulesAdapter mViewPagerAdapter;
+    private View mRoot;
 
-	/* Client used to interact with Google APIs. */
-	private GoogleApiClient mGoogleApiClient;
+    private final int DEFAULT_PAGE = 0;
 
-	/* Is there a ConnectionResult resolution in progress? */
-	private boolean mIsResolving = false;
+    private int mCurrentPage = DEFAULT_PAGE;
 
-	/* Should we automatically resolve ConnectionResults when possible? */
-	private boolean mShouldResolve = false;
-	/* Request code used to invoke sign in user interactions. */
-	private static final int RC_SIGN_IN = 0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_activity);
 
+        mRoot = findViewById(R.id.root_view);
+        mViewPager= (TabsFragmentPager) findViewById(R.id.modules_pager);
+        mViewPager.setPagingEnabled(false);
 
+        SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.pager_tab_strip);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceHolderFragment()).commit();
+        mViewPagerAdapter = new ModulesAdapter(getSupportFragmentManager(), this);
+        mViewPager.setAdapter(mViewPagerAdapter);
 
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setCurrentItem(mCurrentPage);
 
-			// Build GoogleApiClient with access to basic profile
-			mGoogleApiClient = new GoogleApiClient.Builder(this)
-					.addConnectionCallbacks(this)
-					.addOnConnectionFailedListener(this)
-					.addApi(Plus.API)
-					.addScope(new Scope(Scopes.PROFILE))
-					.build();
-		}
-	}
+        tabs.setCustomTabView(R.layout.home_page_tabs, 0);
 
-	@Override
-	protected void onStart() {
-		super.onStart();
+        tabs.setDistributeEvenly(true);
+        tabs.setViewPager(mViewPager);
 
-		mGoogleApiClient.connect();
-	}
+        tabs.setOnPageChangeListener(this);
 
-	@Override
-	protected void onStop() {
-		super.onStop();
+    }
 
-		mGoogleApiClient.disconnect();
-	}
+    @Override
+    protected void onUserSignedOut() {
+        Toast.makeText(getApplicationContext(),
+                "User Signed out..", Toast.LENGTH_SHORT).show();
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login_menu, menu);
-		return true;
-	}
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_signout) {
-		onSignOutClicked();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onConnected(Bundle bundle) {
-		// onConnected indicates that an account was selected on the device, that the selected
-		// account has granted any requested permissions to our app and that we were able to
-		// establish a service connection to Google Play services.
-		Log.d(TAG, "onConnected:" + bundle);
-		mShouldResolve = false;
-	}
-
-	@Override
-	public void onConnectionSuspended(int i) {
-
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		// Could not connect to Google Play Services.  The user needs to select an account,
-		// grant permissions or resolve an error in order to sign in. Refer to the javadoc for
-		// ConnectionResult to see possible error codes.
-		Log.d(TAG, "onConnectionFailed:" + connectionResult);
-
-		if (!mIsResolving && mShouldResolve) {
-			if (connectionResult.hasResolution()) {
-				try {
-					connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-					mIsResolving = true;
-				} catch (IntentSender.SendIntentException e) {
-					Log.e(TAG, "Could not resolve ConnectionResult.", e);
-					mIsResolving = false;
-					mGoogleApiClient.connect();
-				}
-			} else {
-				// Could not resolve the connection result, show the user an
-				// error dialog.
-				showErrorDialog(connectionResult);
+        finish();
+    }
 
 
-			}
-		} else {
-			// Show the signed-out UI
-			showSignedOutUI();
-		}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.login_menu, menu);
+        return true;
+    }
 
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_signout) {
+            performSignOut();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	private void showSignedOutUI() {
-		Toast.makeText(getApplicationContext(),
-				"User Signed out..", Toast.LENGTH_SHORT).show();
+    public static Intent getIntent(Context context) {
 
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+        Intent intent = new Intent(context, HomeActivity.class);
+        return intent;
+    }
 
-		finish();
-	}
+    public static void startActivity(Activity activity) {
+        activity.startActivity(HomeActivity.getIntent(activity.getApplicationContext()));
+    }
 
-	private void showErrorDialog(ConnectionResult connectionResult) {
-		Toast.makeText(getApplicationContext(),
-				connectionResult.toString(), Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-	private void onSignOutClicked() {
-		// Clear the default account so that GoogleApiClient will not automatically
-		// connect in the future.
-		if (mGoogleApiClient.isConnected()) {
-			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-			mGoogleApiClient.disconnect();
-		}
+    }
 
-		showSignedOutUI();
-	}
+    @Override
+    public void onPageSelected(int position) {
 
-	public static Intent getIntent(Context context){
+    }
 
-		Intent intent = new Intent(context, HomeActivity.class);
-		return intent;
-	}
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
-	public static void startActivity(Activity activity){
-		activity.startActivity(HomeActivity.getIntent(activity.getApplicationContext()));
-	}
-	
+    }
+
+
+    /**
+     * Class that backs the Fragments hosted in ViewPager.
+     * It maintains a Cache to avoid creating new Fragments
+     * every time.
+     *
+     * @author samuh
+     *
+     */
+    public static class ModulesAdapter extends FragmentStatePagerAdapter {
+
+        private final int[] TITLES = { R.string.tab_title_home,
+                R.string.tab_title_search,
+                R.string.tab_title_messages,
+                R.string.tab_title_contacts};
+
+        private Fragment mCurrentPrimaryItem = null;
+
+        private HashMap<Integer, Fragment> mFragmentsRef = new HashMap<Integer, Fragment>();
+        private WeakReference<HomeActivity> mActivity;
+
+        private static final int HOME = 0;
+        private static final int SEARCH = 1;
+        private static final int MESSAGES = 2;
+        private static final int CONTACTS = 3;
+
+        public ModulesAdapter(FragmentManager fm, HomeActivity activity) {
+            super(fm);
+            mActivity = new WeakReference<HomeActivity>(activity);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup viewgroup, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(viewgroup, position);
+            mFragmentsRef.put(position, fragment);
+            return super.instantiateItem(viewgroup, position);
+        }
+
+        /**
+         * Return the Fragment associated with a specified position.
+         */
+        public Fragment getItem(final int position) {
+            Fragment child = null;
+
+            switch(position) {
+                case HOME:
+                    child =
+                            (mFragmentsRef.get(position) == null) ?
+                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                    break;
+
+                case SEARCH:
+                    child = (mFragmentsRef.get(position) == null) ?
+                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                    break;
+
+                case MESSAGES:
+                    child = (mFragmentsRef.get(position) == null) ?
+                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                    break;
+
+                case CONTACTS:
+                default:
+                    child = (mFragmentsRef.get(position) == null) ?
+                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                    break;
+            }
+
+            return child;
+        }
+
+        public Fragment getPrimaryItem(){
+            return mCurrentPrimaryItem;
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
+            Fragment fragment = (Fragment)object;
+            try{
+                if (fragment != mCurrentPrimaryItem) {
+                    mCurrentPrimaryItem = fragment;
+                    ((FragmentActivity)fragment.getActivity()).invalidateOptionsMenu();
+                }
+            }catch(Exception e){
+                Log.e(TAG, "Error setting primary item", e);
+            }
+
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            Log.d(TAG, String.format(" Destroying Fragment at %d", position));
+            super.destroyItem(container, position, object);
+            mFragmentsRef.remove(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mActivity.get().getString(TITLES[position]);
+        }
+    }
+
 }
