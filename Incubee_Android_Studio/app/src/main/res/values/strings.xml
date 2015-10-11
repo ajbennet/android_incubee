@@ -9,4 +9,8 @@
     <string name="tab_title_search">Search</string>
     <string name="tab_title_messages">Messages</string>
     <string name="tab_title_contacts">Contacts</string>
+    <string name="settings_sign_out">Sign Out</string>
+    <string name="dummy_card_text">Sample</string>
+    <string name="welcome_banner">Welcome to Incubee! \n\nYou can sign-in using your Google account or continue as a Guest</string>
+    <string name="google_sign_in_btn_lbl">Sign-in with Google</string>
 </resources>
