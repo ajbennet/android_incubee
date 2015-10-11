@@ -21,7 +21,7 @@ import services.models.StatusResponse;
 /**
  * Created by sanattripathi on 9/9/15.
  */
-public interface ISendLoginRequests {
+public interface IHitRESTEndpoints {
     @POST("/rest/login")
     Observable<LoginResponse> login(@Body LoginRequest loginRequest);
 
