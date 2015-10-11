@@ -1,14 +1,16 @@
 package incubee.android;
 
-import java.util.ArrayList;
-
-import stackedlist.view.CardStackAdapter;
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import incubee.android.views.GridImagesAdapter;
+import stackedlist.view.CardStackAdapter;
 
 public class SimpleCardsAdapter extends CardStackAdapter<String> {
 
@@ -34,28 +36,21 @@ public class SimpleCardsAdapter extends CardStackAdapter<String> {
 			convertView = mInflator.inflate(R.layout.card, parent, false);
 		}
 
-		TextView row = (TextView) convertView.findViewById(R.id.card_view);
+		RecyclerView recyclerView = (RecyclerView)convertView.findViewById(R.id.recycler_view);
+		recyclerView.setHasFixedSize(true);
 
-		switch(position){
-		case 0:
-			row.setBackgroundColor(Color.RED);
-			row.setText(model);
-			break;
-		case 1:
-			row.setBackgroundColor(Color.GREEN);
-			row.setText(model);
-			break;
-		case 2:
-			row.setBackgroundColor(Color.YELLOW);
-			row.setText(model);
-			break;
-		default:
-			row.setBackgroundColor(Color.LTGRAY);
-			row.setText(model);
-			break;
+		StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2,
+				StaggeredGridLayoutManager.VERTICAL);
+		recyclerView.setLayoutManager(gridLayoutManager);
 
 
-		}
+
+
+		GridImagesAdapter rcAdapter = new GridImagesAdapter(mContext, null);
+		recyclerView.setAdapter(rcAdapter);
+
+
+
 
 		return convertView;
 	}
