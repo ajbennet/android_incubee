@@ -1,11 +1,15 @@
 package incubee.android.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -13,7 +17,11 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import java.io.IOException;
+
 import incubee.android.R;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by samuh on 10/10/2015.
@@ -74,7 +82,7 @@ public abstract class GSConnectionActivity extends BaseActivity implements
     }
 
 
-    protected void onUserSignedIn(Person person){
+    protected void onUserSignedIn(Person person, String accountName){
 
     }
     protected void onUserSignedOut(){
@@ -84,6 +92,27 @@ public abstract class GSConnectionActivity extends BaseActivity implements
 
     }
 
+    public Observable<String> getToken(final Activity activity, final String accountName) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                String scopes = "oauth2:profile email"; // magic string! oauth2: followed by space sep scopes.
+                String token = null;
+                try {
+                    token = GoogleAuthUtil.getToken(activity, accountName, scopes);
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (UserRecoverableAuthException e) {
+                    startActivityForResult(e.getIntent(), ConnectionResult.SIGN_IN_REQUIRED);
+                } catch (GoogleAuthException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                Log.d(TAG, "sending token : "+token);
+                subscriber.onNext(token);
+            }
+        });
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         // onConnected indicates that an account was selected on the device, that the selected
@@ -91,6 +120,8 @@ public abstract class GSConnectionActivity extends BaseActivity implements
         // establish a service connection to Google Play services.
         Log.d(TAG, "onConnected:" + bundle);
         mShouldResolve = false;
+
+        String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -105,7 +136,7 @@ public abstract class GSConnectionActivity extends BaseActivity implements
             Log.d(TAG, data);
 
             // Show the signed-in UI
-            onUserSignedIn(currentPerson);
+            onUserSignedIn(currentPerson, accountName);
 
         }else{
             Log.d(TAG, "Unable to retrieve information ");
