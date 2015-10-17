@@ -6,7 +6,7 @@ android {
     signingConfigs {
         release_config {
             keyAlias 'incubee_release_key'
-            storeFile file('???')
+            storeFile file('D:\\keystore\\incubee-release-key.keystore')
             storePassword '???'
             keyPassword '???'
         }
