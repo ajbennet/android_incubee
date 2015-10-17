@@ -15,6 +15,8 @@ public class TabsFragmentPager extends ViewPager {
     public TabsFragmentPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.enabled = true;
+
+        this.setPageTransformer(false, new FadeOutTransformer());
     }
 
     @Override
