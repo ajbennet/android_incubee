@@ -36,8 +36,6 @@ if [ $PULLBULL = 1 ]; then
 fi
 
 echo "Running tests before push... if you really want to skip this use git push --no-verify "
-echo "directory : "
-pwd
 CMD="android_incubee/Incubee_Android_Studio/gradlew testDebug" # Command to run your tests
 
 # Check if we actually have commits to push

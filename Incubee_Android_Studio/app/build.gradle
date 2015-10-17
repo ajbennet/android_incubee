@@ -32,17 +32,15 @@ android {
     }
 }
 
-tasks.create(name: 'copy', type: Copy) {
-    print 'Copying pre-push to hooks'
-//    assert file("../pre-push").exists()
-    from '../pre-push'
-//    assert file("../../.git/hooks/").exists()
-    into '../../.git/hooks/'
-//    assert file("../../.git/hooks/pre-push").exists()
-//    inputs.sourceFiles.stopExecutionIfEmpty()
+tasks.whenTaskAdded { theTaskAtHand ->
+    if (theTaskAtHand.name.contains("preReleaseBuild")) {
+        copy {
+            print '\n Copying pre-push to hooks \n'
+            from '../pre-push'
+            into '../../.git/hooks/'
+        }
+    }
 }
-
-copy.dependsOn preBuild
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
