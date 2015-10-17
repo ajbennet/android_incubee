@@ -1,0 +1,67 @@
+#!/bin/bash
+
+git remote update
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse @{u})
+BASE=$(git merge-base @ @{u})
+
+PULLBULL=0
+
+if [ $LOCAL = $REMOTE ]; then
+    echo "Pull check: Up-to-date"
+elif [ $LOCAL = $BASE ]; then
+    echo "Pull check: Need to pull"
+    PULLBULL=1
+elif [ $REMOTE = $BASE ]; then
+    echo "Pull check: Need to push"
+else
+    echo "Pull check: Diverged"
+    PULLBULL=1
+fi
+
+# It can take forever to run the tests below, and then you find out you can't push anyway because
+# you haven't pulled. This helpful male bovine attempts to prevent you wasting your time.
+
+if [ $PULLBULL = 1 ]; then
+    echo " "
+    echo "   (___)"
+    echo "   (o o)_____/"
+    echo "    @@ '     \\"
+    echo "     \ ____, /"
+    echo "     //    //"
+    echo "    ^^    ^^"
+    echo "Pull Bull says: You need to pull!"
+    echo " "
+    exit 1
+fi
+
+echo "Running tests before push... if you really want to skip this use git push --no-verify "
+echo "directory : "
+pwd
+cd ../../
+echo pwd
+CMD="../android_incubee/Incubee_Android_Studio/gradlew test" # Command to run your tests
+
+# Check if we actually have commits to push
+commits=`git log @{u}..`
+if [ -z "$commits" ]; then
+    exit 0
+fi
+
+$CMD
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+    echo "****************************"
+    echo "  ▄██████████████▄▐█▄▄▄▄█▌"
+    echo "  ██████▌▄▌▄▐▐▌███▌▀▀██▀▀ "
+    echo "  ████▄█▌▄▌▄▐▐▌▀███▄▄█▌"
+    echo "  ▄▄▄▄▄██████████████▀"
+    echo "****************************"
+    echo " "
+    echo "Test failed. Please do not push without passing tests. If you really want to push do this:"
+    echo "  git push --no-verify"
+    echo " "
+    exit 1
+fi
+
+exit 0

@@ -32,6 +32,19 @@ android {
     }
 }
 
+def copied = false
+tasks.whenTaskAdded { theTaskAtHand ->
+    // Force our pre push script into .git
+    if (!copied)
+    {
+        copy {
+            from 'pre-push'
+            into '../.git/hooks'
+        }
+        copied = true
+    }
+
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
