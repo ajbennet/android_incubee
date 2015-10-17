@@ -1,40 +1,26 @@
-package incubee.android;
+package incubee.android.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import incubee.android.R;
+import incubee.android.adaptors.SimpleCardsAdapter;
 import stackedlist.view.CardListView;
 import stackedlist.view.Orientations;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PlaceHolderFragment extends Fragment {
-
-	private Context mAppContext;
-	
-	public PlaceHolderFragment() {
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
-		super.onAttach(activity);
-		
-		mAppContext = activity.getApplicationContext();
-	}
+public class HomeFragment extends BaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main, container,
+		View rootView = inflater.inflate(R.layout.card_list_fragment, container,
 				false);
 		
 		initializeView(rootView);

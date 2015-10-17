@@ -1,4 +1,4 @@
-package incubee.android;
+package incubee.android.adaptors;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import incubee.android.R;
 import incubee.android.views.GridImagesAdapter;
 import stackedlist.view.CardStackAdapter;
 

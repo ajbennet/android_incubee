@@ -19,8 +19,11 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-import incubee.android.PlaceHolderFragment;
+import incubee.android.fragment.ContactsFragment;
+import incubee.android.fragment.HomeFragment;
 import incubee.android.R;
+import incubee.android.fragment.MessagesFragment;
+import incubee.android.fragment.SearchFragment;
 import incubee.android.views.SlidingTabLayout;
 import incubee.android.views.TabsFragmentPager;
 
@@ -167,23 +170,23 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
                 case HOME:
                     child =
                             (mFragmentsRef.get(position) == null) ?
-                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                            new HomeFragment() : mFragmentsRef.get(position);
                     break;
 
                 case SEARCH:
                     child = (mFragmentsRef.get(position) == null) ?
-                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                            new SearchFragment() : mFragmentsRef.get(position);
                     break;
 
                 case MESSAGES:
                     child = (mFragmentsRef.get(position) == null) ?
-                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                            new MessagesFragment() : mFragmentsRef.get(position);
                     break;
 
                 case CONTACTS:
                 default:
                     child = (mFragmentsRef.get(position) == null) ?
-                            new PlaceHolderFragment() : mFragmentsRef.get(position);
+                            new ContactsFragment() : mFragmentsRef.get(position);
                     break;
             }
 
