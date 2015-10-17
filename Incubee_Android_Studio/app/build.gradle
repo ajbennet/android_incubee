@@ -32,6 +32,8 @@ android {
     }
 }
 
+print 'a change to test hook'
+
 tasks.whenTaskAdded { theTaskAtHand ->
     if (theTaskAtHand.name.contains("preReleaseBuild")) {
         copy {
