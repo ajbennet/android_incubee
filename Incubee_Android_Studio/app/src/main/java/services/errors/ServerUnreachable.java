@@ -1,7 +1,7 @@
 package services.errors;
 
 /**
- * Copyright © 2015 Zonoff, Inc.  All Rights Reserved.
+ * sanat.
  */
 public class ServerUnreachable extends RuntimeException {
     public ServerUnreachable() {

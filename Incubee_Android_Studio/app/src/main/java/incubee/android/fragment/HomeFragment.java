@@ -41,7 +41,7 @@ public class HomeFragment extends BaseFragment {
 		cards.add("Three");
 		cards.add("Four");
 		
-		mList.setAdapter(new SimpleCardsAdapter(mAppContext, cards));
+		mList.setAdapter(new SimpleCardsAdapter(getActivity(), cards));//coz there is a videoview inside each card that needs activity's window token
 		
 	
 		

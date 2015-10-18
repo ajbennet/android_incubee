@@ -1,7 +1,7 @@
 package services.errors;
 
 /**
- * Copyright © 2015 Zonoff, Inc.  All Rights Reserved.
+ * sanat.
  */
 public class UserAlreadyCreated extends RuntimeException{
     public UserAlreadyCreated() {
