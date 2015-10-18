@@ -31,6 +31,7 @@ public class IntegrationTest {
     private static final String TOKEN = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImRhNjYyNWIzNmJjMDlkMzAwMzUzYjI4YTc0MWNlMTc1MjVhNGMzM2IifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwic3ViIjoiMTEwNDg5MzE0MjYzMjY3Njk3OTc0IiwiYXpwIjoiMTA3OTIxODM2OTc1My0zZmc5c291NDBrZHJqYjVoc2ZubTBvbzlqajBkb2s5YS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImVtYWlsIjoiYWJpbmF0aGFiQGdtYWlsLmNvbSIsImF0X2hhc2giOiJIRVBZblI1UEN6N2JtenR2Qk5HOU13IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF1ZCI6IjEwNzkyMTgzNjk3NTMtM2ZnOXNvdTQwa2RyamI1aHNmbm0wb285amowZG9rOWEuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJpYXQiOjE0Mzc0NjI1NjUsImV4cCI6MTQzNzQ2NjE2NSwibmFtZSI6IkFiaW5hdGhhYiBCZW5uZXQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDQuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1DTDZjb0JGbTlWRS9BQUFBQUFBQUFBSS9BQUFBQUFBQUhDay9uZ0N4R2F4M1RjYy9zOTYtYy9waG90by5qcGciLCJnaXZlbl9uYW1lIjoiQWJpbmF0aGFiIiwiZmFtaWx5X25hbWUiOiJCZW5uZXQiLCJsb2NhbGUiOiJlbiJ9.iLVRfNtK_MZVQtgJFyS-0hk6iJ8JjAT9vr0bg1iwYpryhi2-y2kBF4-qKCM3k_wmYqFh4JJDgbS-_AktT01Wo3kvL7atkQBs3kN8jq9YhTZi5NWkafuQPHB3q4xE8ict_xMjCozfxxAquyDMZzymt_qOP_vDERbU0mrJR2FOLqJNENF29GBUCZjiGxJGEDDP6lnk57ZRLLbc_XpzouowlrOiw2x8u0txXE5fBe6xqa1TDV1Xfa9_eSGSv7azPZPkvS3OUew2KDuCTe6WxwOCnFeiAA5rMOwci_zwyvcDj4bsS8vw-LM-LQs_zXSP2gKxIrM2fn1sestAxtfIonNy2A";
     public static final String INCUBEE_ID = "inc_952745e0-ea2e-4365-83b3-cd379072ce57";
 
+    @Ignore
     @Test(expected = RetrofitError.class)
     public void testSignupService()  {
         StatusResponse signupResponse = mServiceProvider.getUserService().signup(NAME, USER_ID, IMAGE_URL, EMAIL, TOKEN).toBlocking().single();
@@ -38,6 +39,7 @@ public class IntegrationTest {
         System.out.println("StatusMessage: "+signupResponse.getStatusMessage());
     }
 
+    @Ignore
     @Test
     public void testLoginService() {
         LoginResponse loginResponse = mServiceProvider.getUserService().login(NAME, USER_ID, IMAGE_URL, EMAIL, TOKEN).toBlocking().single();
@@ -46,12 +48,14 @@ public class IntegrationTest {
         System.out.println("Company_Id: "+loginResponse.getServicedata().getCompany_id());
     }
 
+    @Ignore
     @Test
     public void testGetIncubeeProfileAPI() {
         IncubeeProfile incubeeProfile = mServiceProvider.getUserService().getIncubeeProfile(INCUBEE_ID).toBlocking().single();
         System.out.println(incubeeProfile.getCompany_name());
     }
 
+    @Ignore
     @Test
     public void testGetAllIncubeesAPI() {
         List<IncubeeProfile> incubeeProfiles = mServiceProvider.getUserService().getAllIncubees().toBlocking().single();
@@ -59,20 +63,19 @@ public class IntegrationTest {
         System.out.println(incubeeProfiles.get(0).getId());
     }
 
+    @Ignore
     @Test
     public void testGetAllCustomersAPI() {
         AllLikesModel allCustomerProfiles = mServiceProvider.getUserService().getAllCustomers(INCUBEE_ID).toBlocking().single();
         System.out.println(allCustomerProfiles.getIncubeeList().get(0));
     }
 
+    @Ignore
     @Test
     public void testDeleteAPI() {
         mServiceProvider.getUserService().delete("111766196999845439854");
     }
 
-    /*
-    * Following 2 APIs have some issues, hence ignored
-    * */
     @Ignore
     @Test
     public void testIncubeeLikeAPI() {
@@ -88,6 +91,7 @@ public class IntegrationTest {
         System.out.println(statusResponse.getStatusCode());
     }
 
+    @Ignore
     @Test
     public void testIncubeeAllLikesAPI() {
         AllLikesModel allLikesModel = mServiceProvider.getUserService().getAllLikes(USER_ID).toBlocking().single();
@@ -103,6 +107,7 @@ public class IntegrationTest {
         mServiceProvider.getUserService().sendMsg(USER_ID, sendMessageBody);
     }
 
+    @Ignore
     @Test
     public void testGetAllMsgsAPI() {
         GetMsgResponseBody getMsgResponseBody = mServiceProvider.getUserService().getAllMsgs(USER_ID).toBlocking().single();
