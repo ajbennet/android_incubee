@@ -81,6 +81,7 @@ public class IntegrationTest {
     }
 
 
+    @Ignore
     @Test
     public void testIncubeeCustomerLikeAPI() {
         StatusResponse statusResponse = mServiceProvider.getUserService().customerLike("inc_e14651b7-1f65-460f-8841-5cb716236704", USER_ID).toBlocking().single();
