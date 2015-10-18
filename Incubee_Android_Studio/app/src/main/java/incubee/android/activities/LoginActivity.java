@@ -175,16 +175,8 @@ public class LoginActivity extends GSConnectionActivity implements
                                 } else {
                                     Log.e(TAG, "loginResponse.getServiceData.getCompanyId is null");
                                 }
-//                                showLoginError();
-                                EntitlementInterface entitlementsDB = DBFactory.getEntitlementDB(getApplicationContext());
-                                Entitlement entitlement = new Entitlement();
-                                entitlement.setUserId(mPerson.getId());
-                                entitlement.setEmailId(mAccountName);
-                                entitlement.setDisplayName(mPerson.getName().getGivenName());
-                                entitlement.setCompanyId("");
-                                entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
+                                showLoginError();
 
-                                navigateNextScreen();
                             }
                         })
         );
