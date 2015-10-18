@@ -1,14 +1,20 @@
 package incubee.android.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import incubee.android.App;
 import incubee.android.R;
 import incubee.android.adaptors.SimpleCardsAdapter;
+import rx.Subscriber;
+import rx.functions.Action1;
+import services.ServiceProvider;
+import services.models.IncubeeProfile;
 import stackedlist.view.CardListView;
 import stackedlist.view.Orientations;
 
@@ -16,6 +22,9 @@ import stackedlist.view.Orientations;
  * A placeholder fragment containing a simple view.
  */
 public class HomeFragment extends BaseFragment {
+
+	private Object allIncubeeInformation;
+	private static final String TAG = "HomeFragment";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,17 +42,36 @@ public class HomeFragment extends BaseFragment {
 		
 		mList = (CardListView) rootView.findViewById(R.id.main_list);
 		mList.setOrientation(Orientations.Orientation.Ordered);
-		
-		ArrayList<String> cards = new ArrayList<String>();
-		
-		cards.add("One");
-		cards.add("Two");
-		cards.add("Three");
-		cards.add("Four");
-		
-		mList.setAdapter(new SimpleCardsAdapter(getActivity(), cards));//coz there is a videoview inside each card that needs activity's window token
-		
-	
-		
+
+		getAllIncubeeInformation();
+	}
+
+	public void getAllIncubeeInformation() {
+		ServiceProvider.getInstance().getUserService().getAllIncubees()
+				.subscribeOn(App.getIoThread())
+				.observeOn(App.getMainThread())
+				.doOnError(new Action1<Throwable>() {
+					@Override
+					public void call(Throwable throwable) {
+						Log.e(TAG, "do on error");
+					}
+				})
+				.subscribe(new Subscriber<ArrayList<IncubeeProfile>>() {
+					@Override
+					public void onCompleted() {
+
+					}
+
+					@Override
+					public void onError(Throwable e) {
+						Log.e(TAG, "onError: "+e.getMessage());
+					}
+
+					@Override
+					public void onNext(ArrayList<IncubeeProfile> incubeeProfiles) {
+						Log.d(TAG, "getAllIncubees"+" onNext called!");
+						mList.setAdapter(new SimpleCardsAdapter(getActivity(), incubeeProfiles));//coz there is a videoview inside each card that needs activity's window token
+					}
+				});
 	}
 }

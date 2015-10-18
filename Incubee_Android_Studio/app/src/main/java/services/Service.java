@@ -11,9 +11,9 @@ import services.errors.ServerUnreachable;
 /**
  * Created by sanattripathi on 9/9/15.
  */
-public class Service {
+class Service {
 
-    public static IHitRESTEndpoints getService(Client client, final String baseApiURL, ErrorHandler errorHandler) {
+    static IHitRESTEndpoints getService(Client client, final String baseApiURL, ErrorHandler errorHandler) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseApiURL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -32,7 +32,7 @@ public class Service {
         return builder.build().create(IHitRESTEndpoints.class);
     }
 
-    public static IHitRESTEndpoints getServiceWithNoInterceptor(Client client, final String baseURL, ErrorHandler errorHandler) {
+    static IHitRESTEndpoints getServiceWithNoInterceptor(Client client, final String baseURL, ErrorHandler errorHandler) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseURL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)

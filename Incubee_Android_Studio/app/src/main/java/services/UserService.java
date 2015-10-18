@@ -1,6 +1,6 @@
 package services;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
@@ -62,7 +62,7 @@ public class UserService {
         return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).getIncubeeProfile(incubee_id);
     }
 
-    public Observable<List<IncubeeProfile>> getAllIncubees() {
+    public Observable<ArrayList<IncubeeProfile>> getAllIncubees() {
         return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).getAllIncubees();
     }
 

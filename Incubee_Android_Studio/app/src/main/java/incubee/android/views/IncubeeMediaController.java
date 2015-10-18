@@ -21,7 +21,12 @@ public class IncubeeMediaController extends MediaController{
     }
 
     @Override
-    public void hide() {
+    public void show() {
+        show(0);
+    }
 
+    @Override
+    public void show(int timeout) {
+        super.show(0);
     }
 }

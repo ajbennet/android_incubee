@@ -1,6 +1,6 @@
 package services.apis;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit.client.Response;
 import retrofit.http.Body;
@@ -36,7 +36,7 @@ public interface IHitRESTEndpoints {
     Observable<IncubeeProfile> getIncubeeProfile(@Path("incubee_id") String incubee_id);
 
     @GET("/rest/all")
-    Observable<List<IncubeeProfile>> getAllIncubees();
+    Observable<ArrayList<IncubeeProfile>> getAllIncubees();
 
     @POST("/rest/like/{incubee_id}")
     Observable<StatusResponse> like(@Path("incubee_id") String incubee_id, @Query("uid") String uid);

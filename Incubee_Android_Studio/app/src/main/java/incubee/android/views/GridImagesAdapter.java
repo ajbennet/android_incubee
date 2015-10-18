@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import incubee.android.R;
@@ -14,7 +16,7 @@ import incubee.android.R;
 /**
  * Created by samuh on 10/11/2015.
  */
-public class GridImagesAdapter extends RecyclerView.Adapter<GridImagesAdapter.GridImagesHolders>  {
+public class GridImagesAdapter extends RecyclerView.Adapter<GridImagesAdapter.GridImagesHolders> {
 
     private List<String> imageURLs;
     private Context context;
@@ -34,17 +36,25 @@ public class GridImagesAdapter extends RecyclerView.Adapter<GridImagesAdapter.Gr
 
     @Override
     public void onBindViewHolder(GridImagesHolders holder, int position) {
-        holder.companyPhoto.setImageResource(R.mipmap.ic_launcher);
+        if (imageURLs == null) {
+            Glide.with(context).load(
+                            "https://incubee-images.s3.amazonaws.com/img_246b5df9-bd5d-46be-ba4f-301c971c1b5b"
+            ).fitCenter().placeholder(R.mipmap.ic_launcher).into(holder.companyPhoto);
+        } else {
+            Glide.with(context).load(imageURLs.get(position)).fitCenter().placeholder(R.mipmap.ic_launcher).into(holder.companyPhoto);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 4;
-        //return this.imageURLs.size();
+        if (imageURLs == null) {
+            return 4;
+        }
+        return this.imageURLs.size();
     }
 
 
-    public static class GridImagesHolders extends RecyclerView.ViewHolder{
+    public static class GridImagesHolders extends RecyclerView.ViewHolder {
 
         public ImageView companyPhoto;
 
