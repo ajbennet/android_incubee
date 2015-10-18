@@ -5,10 +5,13 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         release_config {
-            keyAlias 'incubee_release_key'
-            storeFile file('???')
-            storePassword '???'
-            keyPassword '???'
+            def Properties keyProps = new Properties()
+            keyProps.load(new FileInputStream(file('./local.properties')))
+
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
         }
     }
     compileSdkVersion 22
