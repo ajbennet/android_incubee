@@ -10,6 +10,10 @@ import com.google.android.gms.plus.model.people.Person;
 
 import incubee.android.App;
 import incubee.android.R;
+import incubee.android.storage.DBFactory;
+import incubee.android.storage.EntitlementInterface;
+import incubee.android.storage.PrefManager;
+import incubee.android.storage.model.Entitlement;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -43,6 +47,10 @@ public class LoginActivity extends GSConnectionActivity implements
     @Override
     protected void onUserSignedIn(Person person, String accountName) {
         Log.v(TAG + "/onUSI", "pe: " + person + " aN: " + accountName);
+
+        // save user Id for Preference
+        PrefManager.setUserID(getApplicationContext(), person.getId());
+
         mPerson = person;
         mAccountName = accountName;
         mSubscriptions.add(
@@ -145,6 +153,20 @@ public class LoginActivity extends GSConnectionActivity implements
                             public void onNext(LoginResponse loginResponse) {
                                 if (loginResponse != null && loginResponse.getServicedata() != null && loginResponse.getServicedata().getCompany_id() != null) {
                                     Log.d(TAG + "/login", "companyId : " + loginResponse.getServicedata().getCompany_id());
+
+                                    EntitlementInterface entitlementsDB = DBFactory.getEntitlementDB(getApplicationContext());
+                                    Entitlement entitlement = new Entitlement();
+                                    entitlement.setUserId(mPerson.getId());
+                                    entitlement.setEmailId(mAccountName);
+                                    entitlement.setDisplayName(mPerson.getName().getGivenName());
+                                    entitlement.setCompanyId(loginResponse.getServicedata().getCompany_id());
+                                    entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
+
+                                    // write data to Preference :: this will read the next time user
+                                    // logs in and chooses the same account
+                                    PrefManager.setIncubeeID(getApplicationContext(),
+                                            loginResponse.getServicedata().getCompany_id());
+
                                     navigateNextScreen();
                                 } else if (loginResponse == null) {
                                     Log.e(TAG, "loginResponse is null");
@@ -153,7 +175,16 @@ public class LoginActivity extends GSConnectionActivity implements
                                 } else {
                                     Log.e(TAG, "loginResponse.getServiceData.getCompanyId is null");
                                 }
-                                showLoginError();
+//                                showLoginError();
+                                EntitlementInterface entitlementsDB = DBFactory.getEntitlementDB(getApplicationContext());
+                                Entitlement entitlement = new Entitlement();
+                                entitlement.setUserId(mPerson.getId());
+                                entitlement.setEmailId(mAccountName);
+                                entitlement.setDisplayName(mPerson.getName().getGivenName());
+                                entitlement.setCompanyId("");
+                                entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
+
+                                navigateNextScreen();
                             }
                         })
         );
