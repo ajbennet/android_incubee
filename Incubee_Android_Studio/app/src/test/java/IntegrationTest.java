@@ -56,12 +56,18 @@ public class IntegrationTest {
     public void testGetAllIncubeesAPI() {
         List<IncubeeProfile> incubeeProfiles = mServiceProvider.getUserService().getAllIncubees().toBlocking().single();
         System.out.println(incubeeProfiles.get(0).getId());
+        System.out.println(incubeeProfiles.get(0).getId());
     }
 
     @Test
     public void testGetAllCustomersAPI() {
         AllLikesModel allCustomerProfiles = mServiceProvider.getUserService().getAllCustomers(INCUBEE_ID).toBlocking().single();
         System.out.println(allCustomerProfiles.getIncubeeList().get(0));
+    }
+
+    @Test
+    public void testDeleteAPI() {
+        mServiceProvider.getUserService().delete("111766196999845439854");
     }
 
     /*

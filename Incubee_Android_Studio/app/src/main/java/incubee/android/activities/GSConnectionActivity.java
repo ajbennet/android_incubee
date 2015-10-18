@@ -109,6 +109,7 @@ public abstract class GSConnectionActivity extends BaseActivity implements
                 }
                 Log.d(TAG, "sending token : "+token);
                 subscriber.onNext(token);
+                subscriber.onCompleted();
             }
         });
     }

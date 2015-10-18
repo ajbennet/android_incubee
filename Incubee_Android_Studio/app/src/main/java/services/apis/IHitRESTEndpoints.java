@@ -2,6 +2,7 @@ package services.apis;
 
 import java.util.List;
 
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
@@ -28,8 +29,8 @@ public interface IHitRESTEndpoints {
     @POST("/rest/signup")
     Observable<StatusResponse> signup(@Body SignupRequest signupRequest);
 
-    @DELETE("/rest/user?uid={uid}")
-    void delete(@Path("uid") String uid);
+    @DELETE("/rest/user")
+    Response delete(@Query("uid") String uid);
 
     @GET("/rest/{incubee_id}")
     Observable<IncubeeProfile> getIncubeeProfile(@Path("incubee_id") String incubee_id);
