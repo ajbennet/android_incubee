@@ -175,8 +175,9 @@ public class LoginActivity extends GSConnectionActivity implements
                                 } else {
                                     Log.e(TAG, "loginResponse.getServiceData.getCompanyId is null");
                                 }
-                                showLoginError();
+//                                showLoginError();
 
+                                navigateNextScreen();
                             }
                         })
         );

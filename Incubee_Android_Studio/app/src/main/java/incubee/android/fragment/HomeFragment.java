@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import incubee.android.App;
 import incubee.android.R;
 import incubee.android.adaptors.SimpleCardsAdapter;
+import incubee.android.storage.DBFactory;
+import incubee.android.storage.IncubeeProfileInterface;
 import rx.Subscriber;
 import rx.functions.Action1;
 import services.ServiceProvider;
@@ -64,11 +66,18 @@ public class HomeFragment extends BaseFragment {
 
 					@Override
 					public void onError(Throwable e) {
-						Log.e(TAG, "onError: "+e.getMessage());
+						Log.e(TAG, "onError: " +e.getMessage(), e);
 					}
 
 					@Override
 					public void onNext(ArrayList<IncubeeProfile> incubeeProfiles) {
+
+						IncubeeProfileInterface database = DBFactory.getIncubeeProfileDB(mAppContext);
+						database.saveIncubeeProfiles(mAppContext, incubeeProfiles);
+
+
+						database.getAllIncubeeProfiles(mAppContext);
+
 						Log.d(TAG, "getAllIncubees"+" onNext called!");
 						mList.setAdapter(new SimpleCardsAdapter(getActivity(), incubeeProfiles));//coz there is a videoview inside each card that needs activity's window token
 					}

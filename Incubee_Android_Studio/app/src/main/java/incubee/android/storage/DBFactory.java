@@ -17,6 +17,13 @@ public class DBFactory {
     }
 
     /**
+     * Returns DB interface class for the Entitlement Database
+     */
+    public static IncubeeProfileInterface getIncubeeProfileDB(Context context) {
+        return IncubeeProfileHandler.getInstance(context);
+    }
+
+    /**
      * Flags DB to clear instances on next cleanup call
      */
     public static void flagDBToCleanUp() {
@@ -32,6 +39,7 @@ public class DBFactory {
             clearDB = false;
 
             EntitlementHandler.closeInstance();
+            IncubeeProfileHandler.closeInstance();
 
         }
     }
