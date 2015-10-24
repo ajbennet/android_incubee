@@ -17,17 +17,26 @@
         android:background="#551F1F1F"
         android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/company_name"
+            android:textColor="@android:color/white"
+            android:layout_margin="10dp"/>
+
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:id="@+id/anchor_view">
 
         <com.sprylab.android.widget.TextureVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"/>
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import rx.functions.Action1;
 import services.ServiceProvider;
 import services.models.IncubeeProfile;
 import stackedlist.view.CardListView;
+import stackedlist.view.CardStackAdapter;
 import stackedlist.view.Orientations;
 
 /**
@@ -48,6 +49,12 @@ public class HomeFragment extends BaseFragment {
 		getAllIncubeeInformation();
 	}
 
+	private CardStackAdapter<IncubeeProfile> mAdaptor = null;
+
+	private void onDataLoaded(){
+		mList.setAdapter(mAdaptor);
+	}
+
 	public void getAllIncubeeInformation() {
 		ServiceProvider.getInstance().getUserService().getAllIncubees()
 				.subscribeOn(App.getIoThread())
@@ -75,11 +82,11 @@ public class HomeFragment extends BaseFragment {
 						IncubeeProfileInterface database = DBFactory.getIncubeeProfileDB(mAppContext);
 						database.saveIncubeeProfiles(mAppContext, incubeeProfiles);
 
+						Log.d(TAG, "getAllIncubees" + " onNext called!");
+						mAdaptor = new SimpleCardsAdapter(getActivity(), incubeeProfiles);
 
-						database.getAllIncubeeProfiles(mAppContext);
+						onDataLoaded();
 
-						Log.d(TAG, "getAllIncubees"+" onNext called!");
-						mList.setAdapter(new SimpleCardsAdapter(getActivity(), incubeeProfiles));//coz there is a videoview inside each card that needs activity's window token
 					}
 				});
 	}

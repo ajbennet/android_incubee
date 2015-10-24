@@ -1,7 +1,6 @@
 package incubee.android.adaptors;
 
 import android.app.Activity;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -9,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.sprylab.android.widget.TextureVideoView;
 
@@ -55,6 +55,10 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		recyclerView.setLayoutManager(gridLayoutManager);
 
 
+        View anchor = convertView.findViewById(R.id.anchor_view);
+        TextView companyName = (TextView) convertView.findViewById(R.id.company_name);
+
+        companyName.setText(mIncubeeProfileList.get(position).getCompany_name());
 
 
 		GridImagesAdapter rcAdapter = new GridImagesAdapter(mContext, mIncubeeProfileList.get(position).getImages());
@@ -62,23 +66,17 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 
 
 		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
-		initVideoView(textureVideoView, position);
+		initVideoView(textureVideoView,anchor, position);
 
 		return convertView;
 	}
 
-	private void initVideoView(final TextureVideoView textureVideoView, int position) {
-		final IncubeeMediaController mediaController = new IncubeeMediaController(mContext);
+	private void initVideoView(final TextureVideoView textureVideoView, final View anchor, int position) {
+		final IncubeeMediaController mediaController = new IncubeeMediaController(mContext, anchor);
 		textureVideoView.setVideoURI(getVideoUri(position));
-		textureVideoView.setMediaController(mediaController);
-		textureVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-			@Override
-			public void onPrepared(final MediaPlayer mp) {
-				Log.d("initVideoView", "onPrepared called!");
-				startVideoPlayback(textureVideoView);
-				mediaController.show(0);
-			}
-		});
+        textureVideoView.setMediaController(mediaController);
+		mediaController.show();
+
 	}
 
 	private void startVideoPlayback(TextureVideoView textureVideoView) {
@@ -87,8 +85,11 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		textureVideoView.start();
 	}
 
+	private void stopVideoPlayback(TextureVideoView textureVideoView){
+		textureVideoView.stopPlayback();
+	}
 	private Uri getVideoUri(int position) {
-//		return "android.resource://" + mContext.getPackageName() + "/" + R.raw.video;
+
 		String url = mIncubeeProfileList.get(position).getVideo_url();
 		try {
 			return Uri.parse(url);

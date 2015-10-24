@@ -2,6 +2,7 @@ package incubee.android.storage;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,8 @@ import services.models.IncubeeProfile;
  * Created by samuh on 10/18/2015.
  */
 public interface IncubeeProfileInterface {
+
+    Uri INC_PROF_MOD_URI = Uri.parse("sqlite://incubee.android/db/IncubeeProfile/modified");
 
     /**
      * Returns true if the storage exists for the user
