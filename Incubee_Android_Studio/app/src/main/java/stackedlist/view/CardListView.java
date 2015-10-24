@@ -342,6 +342,11 @@ public class CardListView extends AdapterView<ListAdapter> {
 	}
 
 	@Override
+	public void removeView(View child) {
+		super.removeView(child);
+	}
+
+	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
 		if (mTopCard == null) {
 			return false;
@@ -357,11 +362,9 @@ public class CardListView extends AdapterView<ListAdapter> {
 			mTopCard.getHitRect(childRect);
 
 			if(mListener != null){
-				ListAdapter adaptor = getAdapter();
-				int position = getChildCount() - 1;
-				if(adaptor instanceof CardStackAdapter){
-					position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
-				}
+
+				int position = (int) mTopCard.getTag();
+
 				mListener.onCardClicked(position);
 			}
 			pointerIndex = event.getActionIndex();
@@ -464,11 +467,7 @@ public class CardListView extends AdapterView<ListAdapter> {
 
 				if(mListener != null){
 
-                    ListAdapter adaptor = getAdapter();
-                    int position = getChildCount() - 1;
-                    if(adaptor instanceof CardStackAdapter){
-                        position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
-                    }
+                    int position = (Integer)topCard.getTag();
 
 					if ( targetX > 0 ) {
 						mListener.cardLiked(position);
@@ -513,7 +512,8 @@ public class CardListView extends AdapterView<ListAdapter> {
 		if(mTopCard != null)
 			mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
 
-		int position = getVisibleChildPosition();
+
+		int position = (Integer)topCard.getTag();
 
 		if(mListener != null){
 			if ( cardLiked ) {
@@ -543,12 +543,12 @@ public class CardListView extends AdapterView<ListAdapter> {
 	}
 
 	public int getVisibleChildPosition() {
-		ListAdapter adaptor = getAdapter();
-		int position = getChildCount() - 1;
-		if(adaptor instanceof CardStackAdapter){
-			position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
-		}
-		return position;
+
+        if(mTopCard != null){
+            return (Integer)mTopCard.getTag();
+        }
+
+		return 0;
 	}
 }
 

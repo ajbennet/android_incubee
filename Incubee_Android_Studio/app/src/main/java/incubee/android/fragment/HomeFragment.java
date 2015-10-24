@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -51,19 +52,25 @@ public class HomeFragment extends BaseFragment {
 	}
 
 	private CardListView mCardList;
+    private TextView mHighConcept;
+
 	private void initializeView(View rootView) {
 		
 		mCardList = (CardListView) rootView.findViewById(R.id.main_list);
-		mCardList.setOrientation(Orientations.Orientation.Ordered);
-        mCardList.setCardEventListener(mCardEventListener);
+        mHighConcept = (TextView) rootView.findViewById(R.id.company_high_concept);
         mLikeButton = (Button) rootView.findViewById(R.id.likeButton);
         mDisLikeButton = (Button) rootView.findViewById(R.id.dislikeButton);
         mCartButton = (Button) rootView.findViewById(R.id.cart_button);
+
+
+        mCardList.setOrientation(Orientations.Orientation.Ordered);
+        mCardList.setCardEventListener(mCardEventListener);
         mLikeButton.setOnClickListener(mButtonClickListener);
         mDisLikeButton.setOnClickListener(mButtonClickListener);
         mCartButton.setOnClickListener(mButtonClickListener);
 
 		getAllIncubeeInformation();
+
 	}
 
 	private SimpleCardsAdapter mCardStackAdaptor = null;
@@ -100,12 +107,15 @@ public class HomeFragment extends BaseFragment {
                                 }
                             })
             );
+
+            updateCurrentView();
         }
 
         @Override
         public void cardDisliked(int position) {
             IncubeeProfile incubeeProfile = mIncubeeProfiles.get(position);
             Log.d(TAG, "incubeeID: "+incubeeProfile.getId()+" disliked!");
+            updateCurrentView();
         }
 
         @Override
@@ -129,6 +139,7 @@ public class HomeFragment extends BaseFragment {
                     becomeCustomer();
                     break;
             }
+            updateCurrentView();
         }
     };
 
@@ -165,6 +176,16 @@ public class HomeFragment extends BaseFragment {
         );
     }
 
+    private void updateCurrentView(){
+        int visibleChild = mCardList.getVisibleChildPosition();
+
+        Log.d(TAG, "Updating current view at :" + visibleChild);
+
+        mHighConcept.setText(mIncubeeProfiles.get(visibleChild).getHigh_concept());
+
+
+    }
+
     public void getAllIncubeeInformation() {
         mSubscriptions.add(
                 ServiceProvider.getInstance().getUserService().getAllIncubees()
@@ -197,6 +218,8 @@ public class HomeFragment extends BaseFragment {
                                 mIncubeeProfiles = incubeeProfiles;
                                 mCardStackAdaptor = new SimpleCardsAdapter(getActivity(), mIncubeeProfiles);
                                 mCardList.setAdapter(mCardStackAdaptor);
+
+                                updateCurrentView();
                             }
                         })
         );

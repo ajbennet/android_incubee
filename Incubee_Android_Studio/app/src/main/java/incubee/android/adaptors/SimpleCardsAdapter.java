@@ -58,16 +58,18 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 
         View anchor = convertView.findViewById(R.id.anchor_view);
         TextView companyName = (TextView) convertView.findViewById(R.id.company_name);
+        TextView companyFounder = (TextView) convertView.findViewById(R.id.company_founder);
 
         companyName.setText(mIncubeeProfileList.get(position).getCompany_name());
+        companyFounder.setText(mIncubeeProfileList.get(position).getFounder());
 
 
 		GridImagesAdapter rcAdapter = new GridImagesAdapter(mContext, mIncubeeProfileList.get(position).getImages());
 		recyclerView.setAdapter(rcAdapter);
 
 
-		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
-		initVideoView(textureVideoView, anchor, position);
+//		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
+//		initVideoView(textureVideoView, anchor, position);
 
 		return convertView;
 	}

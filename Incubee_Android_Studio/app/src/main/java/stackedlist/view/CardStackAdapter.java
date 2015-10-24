@@ -68,6 +68,8 @@ public abstract class CardStackAdapter<T> extends BaseAdapter {
 			}
 		}
 
+		wrapper.setTag(Integer.valueOf(position));
+
 		return wrapper;
 	}
 

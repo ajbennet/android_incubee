@@ -11,12 +11,21 @@
         app:orientation="ordered"
         android:id="@+id/main_list" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/company_high_concept"
+        android:layout_margin="10dp"
+        android:layout_below="@id/main_list"
+        android:textSize="14sp"
+        android:padding="5dp"/>
+
     <Button
         android:id="@+id/likeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/like_txt"
-        android:layout_below="@id/main_list"
+        android:layout_below="@id/company_high_concept"
         android:layout_alignParentLeft="true"/>
 
 	<Button
@@ -24,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cart_txt"
-        android:layout_below="@id/main_list"
+        android:layout_below="@id/company_high_concept"
         android:layout_centerInParent="true"/>
 
     <Button
@@ -32,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dislike_txt"
-        android:layout_below="@id/main_list"
+        android:layout_below="@id/company_high_concept"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
