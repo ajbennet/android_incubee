@@ -35,6 +35,9 @@ public abstract class CardStackAdapter<T> extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+
+		position = getNormalizedPosition(position);
+
 		FrameLayout wrapper = (FrameLayout) convertView;
 		FrameLayout innerWrapper;
 		View cardView;
@@ -92,7 +95,7 @@ public abstract class CardStackAdapter<T> extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return getModel(position);
+		return getModel(getNormalizedPosition(position));
 	}
 
 	public T getModel(int position) {
@@ -103,12 +106,18 @@ public abstract class CardStackAdapter<T> extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mData.size();
+		return Integer.MAX_VALUE;
+	}
+
+	private int getNormalizedPosition(int position){
+
+		return (position % mData.size());
+
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return getItem(position).hashCode();
+		return getItem(getNormalizedPosition(position)).hashCode();
 	}
 
 	public Context getContext() {
