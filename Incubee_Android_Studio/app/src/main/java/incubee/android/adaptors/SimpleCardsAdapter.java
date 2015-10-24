@@ -81,8 +81,9 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 			@Override
 			public void onPrepared(MediaPlayer mp) {
 				textureVideoView.start();
-				textureVideoView.pause();
+				textureVideoView.seekTo(100);
 				mediaController.show();
+				textureVideoView.pause();
 
 			}
 		});
