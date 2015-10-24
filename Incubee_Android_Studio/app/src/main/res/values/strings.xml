@@ -15,4 +15,7 @@
     <string name="google_sign_in_btn_lbl">Sign-in with Google</string>
     <string name="signup_error_msg">We are unable to log you in at this time, please check your credentials and login after sometime</string>
     <string name="signup_error_title">Error logging in</string>
+    <string name="like_txt">Like</string>
+    <string name="dislike_txt">Dis-Like</string>
+    <string name="cart_txt">Cart</string>
 </resources>

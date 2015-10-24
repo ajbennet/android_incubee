@@ -6,6 +6,7 @@ import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
 import rx.Observable;
 import services.errors.UserAlreadyCreated;
+import services.models.AllCustomers;
 import services.models.AllLikesModel;
 import services.models.GetMsgResponseBody;
 import services.models.IncubeeProfile;
@@ -66,19 +67,19 @@ public class UserService {
         return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).getAllIncubees();
     }
 
-    public Observable<StatusResponse> like(String incubee_id, String userId) {
-        return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).like(incubee_id, userId);
+    public Observable<StatusResponse> like(String incubee_id, String userId, String token) {
+        return Service.getServiceWithNoInterceptorButHeader(null, BASE_API_URL, null, token).like(incubee_id, userId);
     }
 
-    public Observable<StatusResponse> customerLike(String incubee_id, String userId) {
-        return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).customerLike(incubee_id, userId);
+    public Observable<StatusResponse> customerLike(String incubee_id, String userId, String token) {
+        return Service.getServiceWithNoInterceptorButHeader(null, BASE_API_URL, null, token).customerLike(incubee_id, userId);
     }
 
-    public Observable<AllLikesModel> getAllLikes(String user_id) {
+    public Observable<AllLikesModel> getAllLikes(String user_id, String token) {
         return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).getAllLikes(user_id);
     }
 
-    public Observable<AllLikesModel> getAllCustomers(String incubee_id) {
+    public Observable<AllCustomers> getAllCustomers(String incubee_id) {
         return Service.getServiceWithNoInterceptor(null, BASE_API_URL, null).getAllCustomers(incubee_id);
     }
 

@@ -436,6 +436,7 @@ public class CardListView extends AdapterView<ListAdapter> {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			Log.d("Fling", "Fling with " + velocityX + ", " + velocityY);
+			Log.d("Fling", "MotionEvent with " + e1 + ", " + e2);
 			final View topCard = mTopCard;
 			float dx = e2.getX() - e1.getX();
 			if (Math.abs(dx) > mTouchSlop &&
@@ -456,7 +457,7 @@ public class CardListView extends AdapterView<ListAdapter> {
 				duration = Math.min(500, duration);
 
 				mTopCard = getChildAt(getChildCount() - 2);
-				
+
 				if(mTopCard != null)
 					mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
 
@@ -476,12 +477,60 @@ public class CardListView extends AdapterView<ListAdapter> {
 				}
 
 				topCard.animate()
-				.setDuration(duration)
+						.setDuration(duration)
+						.alpha(.75f)
+						.setInterpolator(new LinearInterpolator())
+						.x(targetX)
+						.y(targetY)
+						.rotation(Math.copySign(45, velocityX))
+						.setListener(new AnimatorListenerAdapter() {
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								removeViewInLayout(topCard);
+								ensureFull();
+							}
+
+							@Override
+							public void onAnimationCancel(Animator animation) {
+								onAnimationEnd(animation);
+							}
+						});
+				return true;
+			} else
+				return false;
+		}
+	}
+
+	public void remove(boolean cardLiked){
+		if(mTopCard == null) {
+			Log.e("Remove", "cannot remove mTopCard is null");
+			return;
+		}
+		final View topCard = mTopCard;
+		mTopCard = getChildAt(getChildCount() - 2);
+
+		if(mTopCard != null)
+			mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
+
+		ListAdapter adaptor = getAdapter();
+		int position = getChildCount() - 1;
+		if(adaptor instanceof CardStackAdapter){
+			position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
+		}
+
+		if(mListener != null){
+			if ( cardLiked ) {
+				mListener.cardLiked(position);
+			} else {
+				mListener.cardDisliked(position);
+			}
+		}
+
+		topCard.animate()
+				.setDuration(100)
 				.alpha(.75f)
 				.setInterpolator(new LinearInterpolator())
-				.x(targetX)
-				.y(targetY)
-				.rotation(Math.copySign(45, velocityX))
+				.translationXBy(cardLiked ? -((View)topCard).getWidth() : ((View)topCard).getWidth())
 				.setListener(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
@@ -494,10 +543,6 @@ public class CardListView extends AdapterView<ListAdapter> {
 						onAnimationEnd(animation);
 					}
 				});
-				return true;
-			} else
-				return false;
-		}
 	}
 }
 

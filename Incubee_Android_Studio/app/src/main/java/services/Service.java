@@ -39,7 +39,43 @@ class Service {
                 .setLog(new RestAdapter.Log() {
                     @Override
                     public void log(String message) {
-                        System.out.println("RestAdapter log: "+message);
+                        System.out.println("RestAdapter log: " + message);
+                    }
+                });
+
+        if(errorHandler == null) {
+            builder.setErrorHandler(new ErrorHandler() {
+                @Override
+                public Throwable handleError(RetrofitError cause) {
+                    return new ServerUnreachable();
+                }
+            });
+        } else {
+            builder.setErrorHandler(errorHandler);
+        }
+
+        if(client == null) {
+            builder.setClient(new DefaultClient());
+        } else {
+            builder.setClient(client);
+        }
+        return builder.build().create(IHitRESTEndpoints.class);
+    }
+
+    static IHitRESTEndpoints getServiceWithNoInterceptorButHeader(Client client, final String baseURL, ErrorHandler errorHandler, final String authToken) {
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setEndpoint(baseURL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addHeader("token", authToken);
+                    }
+                })
+                .setLog(new RestAdapter.Log() {
+                    @Override
+                    public void log(String message) {
+                        System.out.println("RestAdapter log: " + message);
                     }
                 });
 
