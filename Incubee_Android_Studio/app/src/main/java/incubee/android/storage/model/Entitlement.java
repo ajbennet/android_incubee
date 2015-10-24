@@ -12,6 +12,7 @@ public class Entitlement implements Parcelable {
     private String mUserId;
     private String mCompanyId;
     private String mEmailId;
+    private String mToken;
 
 
     @Override
@@ -25,9 +26,10 @@ public class Entitlement implements Parcelable {
         pc.writeString(mUserId);
         pc.writeString(mCompanyId);
         pc.writeString(mEmailId);
+        pc.writeString(mToken);
     }
 
-    public Entitlement(){
+    public Entitlement() {
 
     }
 
@@ -39,6 +41,7 @@ public class Entitlement implements Parcelable {
         mUserId = pc.readString();
         mCompanyId = pc.readString();
         mEmailId = pc.readString();
+        mToken = pc.readString();
     }
 
     /**
@@ -86,5 +89,13 @@ public class Entitlement implements Parcelable {
 
     public void setEmailId(String emailId) {
         this.mEmailId = emailId;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public void setToken(String mToken) {
+        this.mToken = mToken;
     }
 }

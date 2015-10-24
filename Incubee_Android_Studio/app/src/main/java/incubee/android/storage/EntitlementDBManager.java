@@ -107,6 +107,7 @@ public class EntitlementDBManager extends BaseDataBaseManager {
         public static final String FIELD_UID 				= "etl_uid";
         public static final String FIELD_COMPANY_ID			= "etl_company_id";
         public static final String FIELD_EMAIL_ID 			= "etl_email";
+        public static final String FIELD_TOKEN   			= "etl_token";
 
         //Additional fields created for future use
         public static final String FIELD_EXTRA_1			= "xx_etl_extra_1";
@@ -122,6 +123,7 @@ public class EntitlementDBManager extends BaseDataBaseManager {
             CREATE.append(FIELD_UID).append(" VARCHAR(32) UNIQUE,");
             CREATE.append(FIELD_COMPANY_ID).append(" VARCHAR(32) UNIQUE,");
             CREATE.append(FIELD_EMAIL_ID).append(" VARCHAR(32) UNIQUE,");
+            CREATE.append(FIELD_TOKEN).append(" VARCHAR(32) UNIQUE,");
             CREATE.append(FIELD_EXTRA_1).append(" VARCHAR(32),");
             CREATE.append(FIELD_EXTRA_2).append(" VARCHAR(32),");
             CREATE.append(FIELD_EXTRA_3).append(" INTEGER");

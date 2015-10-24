@@ -94,7 +94,8 @@ public class EntitlementHandler implements EntitlementInterface {
                         TABLE_Entitlement.FIELD_DNAME,
                         TABLE_Entitlement.FIELD_UID,
                         TABLE_Entitlement.FIELD_COMPANY_ID,
-                        TABLE_Entitlement.FIELD_EMAIL_ID
+                        TABLE_Entitlement.FIELD_EMAIL_ID,
+                        TABLE_Entitlement.FIELD_TOKEN
                 },
                 whereClause,
                 new String[] { uid },
@@ -115,6 +116,7 @@ public class EntitlementHandler implements EntitlementInterface {
             String companyID = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_COMPANY_ID));
             String emailID = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_EMAIL_ID));
             String displayName = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_DNAME));
+            String token = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_TOKEN));
 
 
             entitlement = new Entitlement();
@@ -122,6 +124,7 @@ public class EntitlementHandler implements EntitlementInterface {
             entitlement.setCompanyId(companyID);
             entitlement.setDisplayName(displayName);
             entitlement.setEmailId(emailID);
+            entitlement.setToken(token);
 
 
         }
@@ -160,6 +163,7 @@ public class EntitlementHandler implements EntitlementInterface {
             values.put(TABLE_Entitlement.FIELD_EMAIL_ID, data.getEmailId());
             values.put(TABLE_Entitlement.FIELD_DNAME, data.getDisplayName());
             values.put(TABLE_Entitlement.FIELD_DATE, System.currentTimeMillis());
+            values.put(TABLE_Entitlement.FIELD_TOKEN, data.getToken());
 
             rowsUpdated = sqliteDb.replace(TABLE_Entitlement.TBL_NAME, null, values);
 

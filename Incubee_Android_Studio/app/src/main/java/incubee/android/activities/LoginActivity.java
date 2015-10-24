@@ -125,13 +125,13 @@ public class LoginActivity extends GSConnectionActivity implements
     private void showLoginError() {
             AlertDialog alertDialog = new AlertDialog.Builder(mContext).setTitle(R.string.signup_error_title)
                     .setMessage(R.string.signup_error_msg)
-                    .setNeutralButton("OK", null)
+                    .setPositiveButton("OK", null)
                     .create();
             alertDialog.show();
 
     }
 
-    private void login(String token) {
+    private void login(final String token) {
         Log.d(TAG + "/login", "called");
         mSubscriptions.add(
                 ServiceProvider.getInstance().getUserService().login(mPerson.getName().getGivenName(), mPerson.getId(), mPerson.getImage().getUrl(), mAccountName, token)
@@ -151,33 +151,34 @@ public class LoginActivity extends GSConnectionActivity implements
 
                             @Override
                             public void onNext(LoginResponse loginResponse) {
-                                if (loginResponse != null && loginResponse.getServicedata() != null && loginResponse.getServicedata().getCompany_id() != null) {
-                                    Log.d(TAG + "/login", "companyId : " + loginResponse.getServicedata().getCompany_id());
+                                if (loginResponse != null) {
+                                    Log.d(TAG, "Received login Response");
 
                                     EntitlementInterface entitlementsDB = DBFactory.getEntitlementDB(getApplicationContext());
                                     Entitlement entitlement = new Entitlement();
                                     entitlement.setUserId(mPerson.getId());
                                     entitlement.setEmailId(mAccountName);
                                     entitlement.setDisplayName(mPerson.getName().getGivenName());
-                                    entitlement.setCompanyId(loginResponse.getServicedata().getCompany_id());
+                                    entitlement.setToken(token);
+
+                                    if(loginResponse.getServicedata() != null){
+                                        entitlement.setCompanyId(loginResponse.getServicedata().getCompany_id());
+                                        // write data to Preference :: this will read the next time user
+                                        // logs in and chooses the same account
+                                        PrefManager.setIncubeeID(getApplicationContext(),
+                                                loginResponse.getServicedata().getCompany_id());
+                                    }
+
                                     entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
 
-                                    // write data to Preference :: this will read the next time user
-                                    // logs in and chooses the same account
-                                    PrefManager.setIncubeeID(getApplicationContext(),
-                                            loginResponse.getServicedata().getCompany_id());
+
 
                                     navigateNextScreen();
-                                } else if (loginResponse == null) {
-                                    Log.e(TAG, "loginResponse is null");
-                                } else if (loginResponse.getServicedata() == null) {
-                                    Log.e(TAG, "loginResponse.getServiceData is null; User not found!");
                                 } else {
-                                    Log.e(TAG, "loginResponse.getServiceData.getCompanyId is null");
+                                    Log.e(TAG, "loginResponse is null");
                                 }
-//                                showLoginError();
+                                showLoginError();
 
-                                navigateNextScreen();
                             }
                         })
         );
