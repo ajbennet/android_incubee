@@ -109,7 +109,7 @@ public abstract class CardStackAdapter<T> extends BaseAdapter {
 		return Integer.MAX_VALUE;
 	}
 
-	private int getNormalizedPosition(int position){
+	public int getNormalizedPosition(int position){
 
 		return (position % mData.size());
 

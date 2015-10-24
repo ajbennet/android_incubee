@@ -356,7 +356,12 @@ public class CardListView extends AdapterView<ListAdapter> {
 			mTopCard.getHitRect(childRect);
 
 			if(mListener != null){
-				mListener.onCardClicked(getChildCount() - 1 ); 
+				ListAdapter adaptor = getAdapter();
+				int position = getChildCount() - 1;
+				if(adaptor instanceof CardStackAdapter){
+					position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
+				}
+				mListener.onCardClicked(position);
 			}
 			pointerIndex = event.getActionIndex();
 			x = event.getX(pointerIndex);
@@ -456,10 +461,17 @@ public class CardListView extends AdapterView<ListAdapter> {
 					mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
 
 				if(mListener != null){
+
+                    ListAdapter adaptor = getAdapter();
+                    int position = getChildCount() - 1;
+                    if(adaptor instanceof CardStackAdapter){
+                        position = ((CardStackAdapter)adaptor).getNormalizedPosition(position);
+                    }
+
 					if ( targetX > 0 ) {
-						mListener.cardLiked(getChildCount()-1);
+						mListener.cardLiked(position);
 					} else {
-						mListener.cardDisliked(getChildCount()-1);
+						mListener.cardDisliked(position);
 					} 
 				}
 
