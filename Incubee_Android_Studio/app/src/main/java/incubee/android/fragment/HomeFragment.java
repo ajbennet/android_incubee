@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ import services.models.IncubeeProfile;
 import services.models.StatusResponse;
 import stackedlist.view.CardEventsListener;
 import stackedlist.view.CardListView;
-import stackedlist.view.CardStackAdapter;
 import stackedlist.view.Orientations;
 
 /**
@@ -39,6 +37,7 @@ public class HomeFragment extends BaseFragment {
     private Button mLikeButton;
     private ArrayList<IncubeeProfile> mIncubeeProfiles;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
+    private Button mCartButton;
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,13 +58,15 @@ public class HomeFragment extends BaseFragment {
         mCardList.setCardEventListener(mCardEventListener);
         mLikeButton = (Button) rootView.findViewById(R.id.likeButton);
         mDisLikeButton = (Button) rootView.findViewById(R.id.dislikeButton);
+        mCartButton = (Button) rootView.findViewById(R.id.cart_button);
         mLikeButton.setOnClickListener(mButtonClickListener);
         mDisLikeButton.setOnClickListener(mButtonClickListener);
+        mCartButton.setOnClickListener(mButtonClickListener);
 
 		getAllIncubeeInformation();
 	}
 
-	private CardStackAdapter<IncubeeProfile> mCardStackAdaptor = null;
+	private SimpleCardsAdapter mCardStackAdaptor = null;
 
     private CardEventsListener mCardEventListener = new CardEventsListener() {
         @Override
@@ -117,25 +118,35 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(((TextView) v).getText().toString().equals(getResources().getString(R.string.like_txt))) {
-                mCardList.remove(true);
-            } else {
-                mCardList.remove(false);
+            switch (v.getId()) {
+                case R.id.likeButton:
+                    mCardList.remove(true);
+                    break;
+                case R.id.dislikeButton:
+                    mCardList.remove(false);
+                    break;
+                case R.id.cart_button:
+                    becomeCustomer();
+                    break;
             }
         }
     };
 
-	public void getAllIncubeeInformation() {
-		ServiceProvider.getInstance().getUserService().getAllIncubees()
-				.subscribeOn(App.getIoThread())
-				.observeOn(App.getMainThread())
-				.doOnError(new Action1<Throwable>() {
-					@Override
-					public void call(Throwable throwable) {
-						Log.e(TAG, "do on error");
-					}
-				})
-				.subscribe(new Subscriber<ArrayList<IncubeeProfile>>() {
+    private void becomeCustomer() {
+        String userID = PrefManager.getUserID(getActivity());
+        Entitlement entitlement = DBFactory.getEntitlementDB(getActivity().getApplicationContext())
+                .getUserEntitlement(getActivity(), userID);
+
+        String token = entitlement.getToken();
+
+        int firstVi = mCardList.getVisibleChildPosition();
+        Log.d(TAG, "visible pos: "+firstVi);
+        IncubeeProfile incubeeProfile = mIncubeeProfiles.get(firstVi);
+        mSubscriptions.add(
+                ServiceProvider.getInstance().getUserService().customerLike(incubeeProfile.getId(), userID, token)
+                .subscribeOn(App.getIoThread())
+                .observeOn(App.getMainThread())
+                .subscribe(new Subscriber<StatusResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -143,21 +154,52 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e.getMessage(), e);
+                        Log.e(TAG, "becomeCustomer/onError: " + e.getMessage(), e);
                     }
 
                     @Override
-                    public void onNext(ArrayList<IncubeeProfile> incubeeProfiles) {
-
-                        IncubeeProfileInterface database = DBFactory.getIncubeeProfileDB(mAppContext);
-                        database.saveIncubeeProfiles(mAppContext, incubeeProfiles);
-
-                        Log.d(TAG, "getAllIncubees" + " onNext called!");
-                        mIncubeeProfiles = incubeeProfiles;
-                        mCardStackAdaptor = new SimpleCardsAdapter(getActivity(), mIncubeeProfiles);
-                        mCardList.setAdapter(mCardStackAdaptor);
+                    public void onNext(StatusResponse statusResponse) {
+                        Log.d(TAG, "becomeCustomer successfull: "+statusResponse.getStatusCode());
                     }
-                });
+                })
+        );
+    }
+
+    public void getAllIncubeeInformation() {
+        mSubscriptions.add(
+                ServiceProvider.getInstance().getUserService().getAllIncubees()
+                        .subscribeOn(App.getIoThread())
+                        .observeOn(App.getMainThread())
+                        .doOnError(new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Log.e(TAG, "do on error");
+                            }
+                        })
+                        .subscribe(new Subscriber<ArrayList<IncubeeProfile>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: " + e.getMessage(), e);
+                            }
+
+                            @Override
+                            public void onNext(ArrayList<IncubeeProfile> incubeeProfiles) {
+
+                                IncubeeProfileInterface database = DBFactory.getIncubeeProfileDB(mAppContext);
+                                database.saveIncubeeProfiles(mAppContext, incubeeProfiles);
+
+                                Log.d(TAG, "getAllIncubees" + " onNext called!");
+                                mIncubeeProfiles = incubeeProfiles;
+                                mCardStackAdaptor = new SimpleCardsAdapter(getActivity(), mIncubeeProfiles);
+                                mCardList.setAdapter(mCardStackAdaptor);
+                            }
+                        })
+        );
 	}
 
     @Override

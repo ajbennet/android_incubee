@@ -103,6 +103,10 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 	}
 
 
+	public IncubeeProfile getTopCard() {
+		int pos = getNormalizedPosition(getCount() - 1);
+		return mIncubeeProfileList.get(pos);
+	}
 
 	private Uri getVideoUri(int position) {
 
