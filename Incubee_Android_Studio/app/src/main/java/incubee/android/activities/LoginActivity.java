@@ -1,6 +1,8 @@
 package incubee.android.activities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -161,7 +163,7 @@ public class LoginActivity extends GSConnectionActivity implements
                                     entitlement.setDisplayName(mPerson.getName().getGivenName());
                                     entitlement.setToken(token);
 
-                                    if(loginResponse.getServicedata() != null){
+                                    if (loginResponse.getServicedata() != null) {
                                         entitlement.setCompanyId(loginResponse.getServicedata().getCompany_id());
                                         // write data to Preference :: this will read the next time user
                                         // logs in and chooses the same account
@@ -170,7 +172,6 @@ public class LoginActivity extends GSConnectionActivity implements
                                     }
 
                                     entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
-
 
 
                                     navigateNextScreen();
@@ -210,5 +211,10 @@ public class LoginActivity extends GSConnectionActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mSubscriptions.clear();
+    }
+
+    public static void startActivity(Activity activity){
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
     }
 }
