@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/like_txt"
         android:layout_below="@id/company_high_concept"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentRight="true"/>
 
 	<Button
         android:id="@+id/cart_button"
@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:text="@string/dislike_txt"
         android:layout_below="@id/company_high_concept"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentLeft="true"
+        />
 
 </RelativeLayout>

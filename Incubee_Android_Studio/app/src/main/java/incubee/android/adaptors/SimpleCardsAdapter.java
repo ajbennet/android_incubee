@@ -68,14 +68,20 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		recyclerView.setAdapter(rcAdapter);
 
 
-//		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
-//		initVideoView(textureVideoView, anchor, position);
+		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
+		initVideoView(textureVideoView, anchor, position);
 
 		return convertView;
 	}
 
 	private void initVideoView(final TextureVideoView textureVideoView, final View anchor, int position) {
 		final IncubeeMediaController mediaController = new IncubeeMediaController(mContext, anchor);
+		if(getVideoUri(position) == null) {
+			textureVideoView.setVisibility(View.GONE);
+			return;
+		} else {
+			textureVideoView.setVisibility(View.VISIBLE);
+		}
 		textureVideoView.setVideoURI(getVideoUri(position));
      	textureVideoView.setMediaController(mediaController);
 
@@ -105,20 +111,14 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		textureVideoView.stopPlayback();
 	}
 
-
-	public IncubeeProfile getTopCard() {
-		int pos = getNormalizedPosition(getCount() - 1);
-		return mIncubeeProfileList.get(pos);
-	}
-
 	private Uri getVideoUri(int position) {
 
-		String url = mIncubeeProfileList.get(position).getVideo_url();
+		String url = mIncubeeProfileList.get(position).getVideo();
 		try {
 			return Uri.parse(url);
 		} catch(Exception e) {
 			Log.e(TAG, "exception; getVideoUri "+e.getMessage()+ " url: "+url);
-			return Uri.parse("https://incubee-images.s3.amazonaws.com/vid_78fab564-c311-4cdd-8589-d4390673440e");
 		}
+		return null;
 	}
 }
