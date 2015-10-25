@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -19,11 +18,12 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
+import incubee.android.R;
 import incubee.android.fragment.ContactsFragment;
 import incubee.android.fragment.HomeFragment;
-import incubee.android.R;
 import incubee.android.fragment.MessagesFragment;
 import incubee.android.fragment.SearchFragment;
+import incubee.android.views.IconTabPagerAdapter;
 import incubee.android.views.SlidingTabLayout;
 import incubee.android.views.TabsFragmentPager;
 
@@ -55,7 +55,7 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
 
         mViewPager.setCurrentItem(mCurrentPage);
 
-        tabs.setCustomTabView(R.layout.home_page_tabs, 0);
+        tabs.setCustomTabView(R.layout.home_page_tabs, R.id.tab_title, R.id.tab_icon);
 
         tabs.setDistributeEvenly(true);
         tabs.setViewPager(mViewPager);
@@ -130,12 +130,19 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
      * @author samuh
      *
      */
-    public static class ModulesAdapter extends FragmentStatePagerAdapter {
+    public static class ModulesAdapter extends IconTabPagerAdapter {
 
         private final int[] TITLES = { R.string.tab_title_home,
                 R.string.tab_title_search,
                 R.string.tab_title_messages,
                 R.string.tab_title_contacts};
+
+        private final int[] ICONS = {
+                R.drawable.h_home,
+                R.drawable.h_search,
+                R.drawable.h_messages,
+                R.drawable.h_profile
+        };
 
         private Fragment mCurrentPrimaryItem = null;
 
@@ -226,6 +233,11 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
         @Override
         public CharSequence getPageTitle(int position) {
             return mActivity.get().getString(TITLES[position]);
+        }
+
+        @Override
+        public int getPageIcon(int position) {
+            return ICONS[position];
         }
     }
 

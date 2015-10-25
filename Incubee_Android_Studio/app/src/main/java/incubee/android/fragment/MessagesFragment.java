@@ -49,7 +49,7 @@ public class MessagesFragment extends BaseFragment implements ViewPager.OnPageCh
 		mViewPager.setCurrentItem(mCurrentPage);
 		mViewPager.setOffscreenPageLimit(2);
 
-		tabs.setCustomTabView(R.layout.home_page_tabs, 0);
+		tabs.setCustomTabView(R.layout.messages_page_tabs, R.id.tab_title, 0);
 
 		tabs.setDistributeEvenly(true);
 		tabs.setViewPager(mViewPager);

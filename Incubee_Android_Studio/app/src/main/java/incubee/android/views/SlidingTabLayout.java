@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +52,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private int mTitleOffset;
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
+    private int mTabIconViewId;
+
     private boolean mDistributeEvenly;
     private ViewPager mViewPager;
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
@@ -116,9 +119,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * @param layoutResId Layout id to be inflated
      * @param textViewId  id of the {@link TextView} in the inflated view
      */
-    public void setCustomTabView(int layoutResId, int textViewId) {
+    public void setCustomTabView(int layoutResId, int textViewId, int iconID) {
         mTabViewLayoutId = layoutResId;
         mTabViewTextViewId = textViewId;
+        mTabIconViewId = iconID;
     }
 
     /**
@@ -136,7 +140,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
-     * {@link #setCustomTabView(int, int)}.
+     * {@link #setCustomTabView(int, int, int)}.
      */
     protected TextView createDefaultTabView(Context context) {
         TextView textView = new TextView(context);
@@ -168,12 +172,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
         for (int i = 0; i < CHILD_COUNT; i++) {
             View tabView = null;
             TextView tabTitleView = null;
+            ImageView tabIconView = null;
             if (mTabViewLayoutId != 0) {
                 // If there is a custom tab view layout id set, try and inflate it
                 tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                         false);
                 tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
-
+                tabIconView = (ImageView) tabView.findViewById(mTabIconViewId);
             }
             if (tabView == null) {
                 tabView = createDefaultTabView(getContext());
@@ -191,6 +196,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabTitleView.setText(adapter.getPageTitle(i));
             }
 
+            if(tabIconView != null ){
+                if(adapter instanceof IconTabPagerAdapter){
+                    tabIconView.setImageResource(((IconTabPagerAdapter) adapter).getPageIcon(i));
+                }
+
+            }
+
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {
@@ -202,7 +214,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             if (i != LAST_CHILD) {
-                tabTitleView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tab_divider, 0);
+                if(tabTitleView != null){
+                    tabTitleView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tab_divider, 0);
+                }
+
             }
         }
     }

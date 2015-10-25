@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="48dp"
-    android:layout_gravity="center">
-
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
@@ -14,15 +9,6 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/tabs_text_sz"
         android:id="@+id/tab_title"
-        android:visibility="invisible"
         android:layout_gravity="center"/>
 
-    <ImageView
-        android:src="@drawable/h_home"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:id="@+id/tab_icon"
-        android:layout_gravity="center"/>
 
-</FrameLayout>
