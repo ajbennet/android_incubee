@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,11 +33,11 @@ public class HomeFragment extends BaseFragment {
 
 	private Object allIncubeeInformation;
 	private static final String TAG = "HomeFragment";
-    private Button mDisLikeButton;
-    private Button mLikeButton;
+    private View mDisLikeButton;
+    private View mLikeButton;
     private ArrayList<IncubeeProfile> mIncubeeProfiles;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
-    private Button mCartButton;
+    private View mCartButton;
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +57,9 @@ public class HomeFragment extends BaseFragment {
 		
 		mCardList = (CardListView) rootView.findViewById(R.id.main_list);
         mHighConcept = (TextView) rootView.findViewById(R.id.company_high_concept);
-        mLikeButton = (Button) rootView.findViewById(R.id.likeButton);
-        mDisLikeButton = (Button) rootView.findViewById(R.id.dislikeButton);
-        mCartButton = (Button) rootView.findViewById(R.id.cart_button);
+        mLikeButton =  rootView.findViewById(R.id.likeButton);
+        mDisLikeButton =  rootView.findViewById(R.id.dislikeButton);
+        mCartButton = rootView.findViewById(R.id.cart_button);
 
 
         mCardList.setOrientation(Orientations.Orientation.Ordered);

@@ -37,12 +37,10 @@ public class GridImagesAdapter extends RecyclerView.Adapter<GridImagesAdapter.Gr
     @Override
     public void onBindViewHolder(GridImagesHolders holder, int position) {
         if (imageURLs == null) {
-//            Glide.with(context).load(
-//                            "https://incubee-images.s3.amazonaws.com/img_246b5df9-bd5d-46be-ba4f-301c971c1b5b"
-//            ).fitCenter().into(holder.companyPhoto);
+            Glide.with(context).load(R.drawable.h_save_proj).fitCenter().into(holder.companyPhoto);
         }
         else {
-            Glide.with(context).load(imageURLs.get(position)).fitCenter().into(holder.companyPhoto);
+            Glide.with(context).load(imageURLs.get(position)).placeholder(R.drawable.h_save_proj).fitCenter().into(holder.companyPhoto);
         }
     }
 

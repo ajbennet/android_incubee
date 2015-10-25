@@ -1,48 +1,78 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http:schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
     <stackedlist.view.CardListView
+        android:id="@+id/main_list"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        app:orientation="ordered"
-        android:id="@+id/main_list" />
+        app:orientation="ordered" />
 
     <TextView
+        android:id="@+id/company_high_concept"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/main_list"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textSize="12sp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"/>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/company_high_concept"
         android:layout_margin="10dp"
-        android:layout_below="@id/main_list"
-        android:textSize="14sp"
-        android:padding="5dp"/>
+        >
 
-    <Button
-        android:id="@+id/likeButton"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/h_go_back"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:id="@+id/cart_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/h_customer"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/h_save_proj"
-        android:layout_below="@id/company_high_concept"
-        android:layout_alignParentRight="true"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="bottom"
+        android:layout_marginBottom="10dp"
+        >
 
-	<Button
-        android:id="@+id/cart_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/h_customer"
-        android:layout_below="@id/company_high_concept"
-        android:layout_centerInParent="true"/>
 
-    <Button
-        android:id="@+id/dislikeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/h_unlike"
-        android:layout_below="@id/company_high_concept"
-        android:layout_alignParentLeft="true"
-        />
+        <ImageView
+            android:id="@+id/dislikeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/h_unlike"
+            android:layout_margin="10dp"
+            />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/likeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/h_save_proj"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
