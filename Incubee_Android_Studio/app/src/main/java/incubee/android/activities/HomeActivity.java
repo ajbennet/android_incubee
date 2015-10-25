@@ -53,7 +53,6 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
         mViewPagerAdapter = new ModulesAdapter(getSupportFragmentManager(), this);
         mViewPager.setAdapter(mViewPagerAdapter);
 
-        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setCurrentItem(mCurrentPage);
 
         tabs.setCustomTabView(R.layout.home_page_tabs, 0);

@@ -1,7 +1,7 @@
 package services.models;
 
 /**
- * Copyright © 2015 Zonoff, Inc.  All Rights Reserved.
+ * Created by Sanat.
  */
 public class Customer {
     private String name;

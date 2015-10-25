@@ -5,20 +5,23 @@
     android:orientation="vertical"
     android:id="@+id/root_view">
 
-    <incubee.android.views.TabsFragmentPager
-        android:id="@+id/modules_pager"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        />
-
-
     <incubee.android.views.SlidingTabLayout
         android:id="@+id/pager_tab_strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_gray" />
+
+
+    <incubee.android.views.TabsFragmentPager
+        android:id="@+id/modules_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/pager_tab_strip"
+        />
+
+
 
 
 </RelativeLayout>

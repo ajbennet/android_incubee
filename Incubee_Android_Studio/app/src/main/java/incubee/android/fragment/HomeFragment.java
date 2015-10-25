@@ -44,7 +44,7 @@ public class HomeFragment extends BaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.card_list_fragment, container,
-				false);
+                false);
 		
 		initializeView(rootView);
 		
@@ -224,6 +224,12 @@ public class HomeFragment extends BaseFragment {
                         })
         );
 	}
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop called!");
+        super.onStop();
+    }
 
     @Override
     public void onDestroy() {

@@ -3,7 +3,7 @@ package services.models;
 import java.util.List;
 
 /**
- * Copyright © 2015 Zonoff, Inc.  All Rights Reserved.
+ * Created by Sanat.
  */
 public class AllCustomers {
     public String statusMessage;

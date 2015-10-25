@@ -2,14 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http:schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="25dp">
 
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <incubee.android.views.SlidingTabLayout
+        android:id="@+id/messages_pager_tab_strip"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Messages Fragment"
-        android:layout_centerInParent="true"/>
+        android:layout_alignParentTop="true"
+        android:background="@color/dark_gray" />
+
+    <incubee.android.views.TabsFragmentPager
+        android:id="@+id/messages_pager"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/messages_pager_tab_strip"
+        android:layout_height="match_parent"
+
+        />
+
+
 
 </RelativeLayout>
