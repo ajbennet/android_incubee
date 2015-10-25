@@ -527,7 +527,7 @@ public class CardListView extends AdapterView<ListAdapter> {
 				.setDuration(100)
 				.alpha(.75f)
 				.setInterpolator(new LinearInterpolator())
-				.translationXBy(cardLiked ? -((View)topCard).getWidth() : ((View)topCard).getWidth())
+				.translationXBy(cardLiked ? (topCard).getWidth() : -(topCard).getWidth())
 				.setListener(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {

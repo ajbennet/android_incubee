@@ -18,7 +18,7 @@
     <string name="like_txt">Like</string>
     <string name="dislike_txt">Dis-Like</string>
     <string name="cart_txt">Cart</string>
-    <string name="saved_projects">Saved projects</string>
+    <string name="saved_projects">Saved Projects</string>
     <string name="customers">Customers</string>
     <string name="others">Others</string>
 </resources>
