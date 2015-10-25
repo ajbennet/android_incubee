@@ -23,6 +23,8 @@ public class IncubeeProfile {
     private String field;
     private String id;
 
+    private boolean isCustomer;
+
     public IncubeeProfile(String c, String cU, String lu, String hC, String d, String tu, String vu, String f, String l, String ce, List<String> img, String v, boolean fu, String ps, String fie, String ID) {
         company_name = c;
         company_url = cU;
@@ -105,5 +107,13 @@ public class IncubeeProfile {
 
     public String getContact_email() {
         return contact_email;
+    }
+
+    public boolean isCustomer() {
+        return isCustomer;
+    }
+
+    public void setIsCustomer(boolean isCustomer) {
+        this.isCustomer = isCustomer;
     }
 }

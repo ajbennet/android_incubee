@@ -20,4 +20,12 @@ public class BaseFragment extends Fragment {
 
         mAppContext = context.getApplicationContext();
     }
+
+    public void onFragmentSelected(){
+
+    }
+
+    public void onRemovedFromSelection(){
+
+    }
 }

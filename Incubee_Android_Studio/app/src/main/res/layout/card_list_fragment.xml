@@ -8,7 +8,7 @@
     <stackedlist.view.CardListView
         android:id="@+id/main_list"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="340dp"
         app:orientation="ordered" />
 
     <TextView
@@ -17,18 +17,17 @@
         android:layout_height="0dp"
         android:layout_below="@id/main_list"
         android:layout_margin="5dp"
-        android:padding="5dp"
         android:textSize="12sp"
-        android:maxLines="4"
         android:ellipsize="end"
         android:layout_weight="1"
+        android:maxLines="2"
         android:textColor="@android:color/black"/>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         >
 
         <ImageView
@@ -42,7 +41,7 @@
             android:id="@+id/cart_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/h_customer"
+            android:src="@drawable/cart_selector"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"/>
     </RelativeLayout>

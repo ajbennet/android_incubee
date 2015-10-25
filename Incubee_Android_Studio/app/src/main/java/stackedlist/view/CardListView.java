@@ -76,6 +76,10 @@ public class CardListView extends AdapterView<ListAdapter> {
 	private int mNextAdapterPosition;
 	private boolean mDragging;
 
+	public View getTopCard(){
+		return mTopCard;
+	}
+
 	public CardListView(Context context) {
 		super(context);
 

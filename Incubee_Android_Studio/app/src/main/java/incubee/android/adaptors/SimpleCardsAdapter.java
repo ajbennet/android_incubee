@@ -121,4 +121,8 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		}
 		return null;
 	}
+
+	public void cleanUp(int currentSelection){
+
+	}
 }

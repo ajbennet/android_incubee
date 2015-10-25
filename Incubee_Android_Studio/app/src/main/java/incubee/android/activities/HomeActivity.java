@@ -19,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 import incubee.android.R;
+import incubee.android.fragment.BaseFragment;
 import incubee.android.fragment.ContactsFragment;
 import incubee.android.fragment.HomeFragment;
 import incubee.android.fragment.MessagesFragment;
@@ -113,6 +114,23 @@ public class HomeActivity extends GSConnectionActivity implements ViewPager.OnPa
 
     @Override
     public void onPageSelected(int position) {
+        Log.d(TAG, String.format("Page Selected :%d", position));
+        if(mCurrentPage != position){
+            Fragment deselectedFragment = ((ModulesAdapter)mViewPager.getAdapter()).getItem(mCurrentPage);
+            if(deselectedFragment != null){
+                ((BaseFragment)deselectedFragment).onRemovedFromSelection();
+            }
+
+            Fragment selectedFragment = ((ModulesAdapter)mViewPager.getAdapter()).getItem(position);
+
+            if(selectedFragment != null){
+                ((BaseFragment)selectedFragment).onFragmentSelected();
+            }
+
+            mCurrentPage = position;
+
+        }
+
 
     }
 

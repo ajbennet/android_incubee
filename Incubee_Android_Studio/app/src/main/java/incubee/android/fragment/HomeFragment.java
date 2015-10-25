@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.sprylab.android.widget.TextureVideoView;
 
 import java.util.ArrayList;
 
@@ -38,6 +41,9 @@ public class HomeFragment extends BaseFragment {
     private ArrayList<IncubeeProfile> mIncubeeProfiles;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
     private View mCartButton;
+
+
+    private SimpleCardsAdapter mCardStackAdaptor = null;
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +78,7 @@ public class HomeFragment extends BaseFragment {
 
 	}
 
-	private SimpleCardsAdapter mCardStackAdaptor = null;
+
 
     private CardEventsListener mCardEventListener = new CardEventsListener() {
         @Override
@@ -135,7 +141,11 @@ public class HomeFragment extends BaseFragment {
                     mCardList.remove(false);
                     break;
                 case R.id.cart_button:
-                    becomeCustomer();
+                    final int visibleChild = mCardList.getVisibleChildPosition();
+                    if(!mIncubeeProfiles.get(visibleChild).isCustomer()){
+                        becomeCustomer();
+                    }
+
                     break;
             }
             updateCurrentView();
@@ -143,6 +153,9 @@ public class HomeFragment extends BaseFragment {
     };
 
     private void becomeCustomer() {
+        final int visibleChild = mCardList.getVisibleChildPosition();
+        mIncubeeProfiles.get(visibleChild).setIsCustomer(true);
+
         String userID = PrefManager.getUserID(getActivity());
         Entitlement entitlement = DBFactory.getEntitlementDB(getActivity().getApplicationContext())
                 .getUserEntitlement(getActivity(), userID);
@@ -154,24 +167,25 @@ public class HomeFragment extends BaseFragment {
         IncubeeProfile incubeeProfile = mIncubeeProfiles.get(firstVi);
         mSubscriptions.add(
                 ServiceProvider.getInstance().getUserService().customerLike(incubeeProfile.getId(), userID, token)
-                .subscribeOn(App.getIoThread())
-                .observeOn(App.getMainThread())
-                .subscribe(new Subscriber<StatusResponse>() {
-                    @Override
-                    public void onCompleted() {
+                        .subscribeOn(App.getIoThread())
+                        .observeOn(App.getMainThread())
+                        .subscribe(new Subscriber<StatusResponse>() {
+                            @Override
+                            public void onCompleted() {
 
-                    }
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "becomeCustomer/onError: " + e.getMessage(), e);
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "becomeCustomer/onError: " + e.getMessage(), e);
+                            }
 
-                    @Override
-                    public void onNext(StatusResponse statusResponse) {
-                        Log.d(TAG, "becomeCustomer successfull: "+statusResponse.getStatusCode());
-                    }
-                })
+                            @Override
+                            public void onNext(StatusResponse statusResponse) {
+                                Log.d(TAG, "becomeCustomer successfull: " + statusResponse.getStatusCode());
+
+                            }
+                        })
         );
     }
 
@@ -180,7 +194,13 @@ public class HomeFragment extends BaseFragment {
 
         Log.d(TAG, "Updating current view at :" + visibleChild);
 
-        mHighConcept.setText(mIncubeeProfiles.get(visibleChild).getHigh_concept());
+        IncubeeProfile selectedProfile = mIncubeeProfiles.get(visibleChild);
+        mHighConcept.setText(selectedProfile.getHigh_concept());
+
+
+        if(mCartButton instanceof ImageView) {
+            mCartButton.setSelected(selectedProfile.isCustomer());
+        }
 
 
     }
@@ -234,5 +254,31 @@ public class HomeFragment extends BaseFragment {
     public void onDestroy() {
         mSubscriptions.clear();
         super.onDestroy();
+    }
+
+    @Override
+    public void onRemovedFromSelection() {
+        super.onRemovedFromSelection();
+
+        View view = mCardList.getTopCard();
+        if(view != null){
+            TextureVideoView textureVideoView = (TextureVideoView) view.findViewById(R.id.video_view);
+
+            if(textureVideoView != null){
+                textureVideoView.stopPlayback();
+                textureVideoView.setMediaController(null);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onFragmentSelected() {
+        super.onFragmentSelected();
+        if(mCardList != null && mCardStackAdaptor != null) {
+            mCardList.setAdapter(mCardStackAdaptor);
+        }
+
     }
 }
