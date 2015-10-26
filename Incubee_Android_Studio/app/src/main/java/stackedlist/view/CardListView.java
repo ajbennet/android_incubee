@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -528,9 +529,9 @@ public class CardListView extends AdapterView<ListAdapter> {
 		}
 
 		topCard.animate()
-				.setDuration(100)
+				.setDuration(400)
 				.alpha(.75f)
-				.setInterpolator(new LinearInterpolator())
+				.setInterpolator(new DecelerateInterpolator(1.5f))
 				.translationXBy(cardLiked ? (topCard).getWidth() : -(topCard).getWidth())
 				.setListener(new AnimatorListenerAdapter() {
 					@Override

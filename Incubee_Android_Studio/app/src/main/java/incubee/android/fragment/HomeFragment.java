@@ -133,6 +133,10 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(mCardList == null || mIncubeeProfiles == null) {
+                Log.wtf(TAG, "error inside mButtonClickListener");
+                return;
+            }
             switch (v.getId()) {
                 case R.id.likeButton:
                     mCardList.remove(true);
@@ -162,6 +166,11 @@ public class HomeFragment extends BaseFragment {
 
         String token = entitlement.getToken();
 
+        if(mCardList == null || mIncubeeProfiles == null) {
+            Log.wtf(TAG, "error inside becomeCustomer");
+            return;
+        }
+
         int firstVi = mCardList.getVisibleChildPosition();
         Log.d(TAG, "visible pos: "+firstVi);
         IncubeeProfile incubeeProfile = mIncubeeProfiles.get(firstVi);
@@ -190,6 +199,10 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void updateCurrentView(){
+        if(mCardList == null || mHighConcept == null || mIncubeeProfiles == null) {
+            Log.wtf(TAG, "updateCurrentView error");
+            return;
+        }
         int visibleChild = mCardList.getVisibleChildPosition();
 
         Log.d(TAG, "Updating current view at :" + visibleChild);
