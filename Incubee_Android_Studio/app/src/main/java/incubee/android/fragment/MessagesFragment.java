@@ -1,5 +1,6 @@
 package incubee.android.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +51,12 @@ public class MessagesFragment extends BaseFragment implements ViewPager.OnPageCh
 		mViewPager.setOffscreenPageLimit(2);
 
 		tabs.setCustomTabView(R.layout.messages_page_tabs, R.id.tab_title, 0);
+		tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+			@Override
+			public int getIndicatorColor(int position) {
+				return Color.TRANSPARENT;
+			}
+		});
 
 		tabs.setDistributeEvenly(true);
 		tabs.setViewPager(mViewPager);

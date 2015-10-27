@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Incubee</string>
+    <string name="app_motto">A Start-up hive</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -11,8 +12,9 @@
     <string name="tab_title_contacts">Contacts</string>
     <string name="settings_sign_out">Sign Out</string>
     <string name="dummy_card_text">Sample</string>
-    <string name="welcome_banner">Welcome to Incubee! \n\nYou can sign-in using your Google account or continue as a Guest</string>
+    <string name="welcome_banner">Login if you already uploaded your work at incub.ee</string>
     <string name="google_sign_in_btn_lbl">Sign-in with Google</string>
+    <string name="no_thanks_btn_lbl"><u>No, Thanks</u></string>
     <string name="signup_error_msg">We are unable to log you in at this time, please check your credentials and login after sometime</string>
     <string name="signup_error_title">Error logging in</string>
     <string name="like_txt">Like</string>

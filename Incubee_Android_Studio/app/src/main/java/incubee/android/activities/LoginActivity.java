@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.plus.model.people.Person;
 
@@ -44,6 +46,12 @@ public class LoginActivity extends GSConnectionActivity implements
         setContentView(R.layout.login_activity);
         mContext = this;
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.no_thanks).setOnClickListener(this);
+        TextView welcomeText = (TextView) findViewById(R.id.welcome_text);
+
+        String bannerText = "<font color='red'>Login</font> if you already uploaded " +
+                "your work at <font color='#07947a'>incub.ee</font>";
+        welcomeText.setText(Html.fromHtml(bannerText), TextView.BufferType.SPANNABLE);
     }
 
     @Override
@@ -200,6 +208,9 @@ public class LoginActivity extends GSConnectionActivity implements
         switch (v.getId()) {
             case R.id.sign_in_button:
                 performSignIn();
+                break;
+            case R.id.no_thanks:
+                finish();
                 break;
             default:
                 break;
