@@ -107,6 +107,9 @@ public class MoviePlayer implements
             }
         });
 
+        mVideoView.seekTo(1);
+        startVideo();
+
         // The SurfaceView is transparent before drawing the first frame.
         // This makes the UI flashing when open a video. (black -> old screen
         // -> video) However, we have no way to know the timing of the first
@@ -123,12 +126,13 @@ public class MoviePlayer implements
         mAudioBecomingNoisyReceiver.register();
 
 
-        startVideo();
-
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(MediaPlayer mp) {
+                mVideoView.start();
+                
+
                 if (!mVideoView.canSeekForward() || !mVideoView.canSeekBackward()) {
                     mController.setSeekable(false);
                 } else {
@@ -136,8 +140,9 @@ public class MoviePlayer implements
                 }
                 setProgress();
 
-                mVideoView.start();
-                mVideoView.seekTo(100);
+
+
+                mController.show();
                 pauseVideo();
 
 
