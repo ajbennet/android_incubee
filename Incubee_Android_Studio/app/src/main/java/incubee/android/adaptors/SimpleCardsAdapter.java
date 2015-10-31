@@ -17,7 +17,6 @@ import java.util.List;
 
 import incubee.android.R;
 import incubee.android.views.GridImagesAdapter;
-import incubee.android.views.IncubeeMediaController;
 import incubee.android.views.MoviePlayer;
 import services.models.IncubeeProfile;
 import stackedlist.view.CardStackAdapter;
@@ -60,6 +59,7 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 			spanCount = 2;
 		}
 
+
 		RecyclerView recyclerView = (RecyclerView)convertView.findViewById(R.id.recycler_view);
 		recyclerView.setHasFixedSize(false);
 
@@ -86,12 +86,15 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 	}
 
 	private void initVideoView(final View root, final TextureVideoView textureVideoView, final View anchor, int position) {
-		final IncubeeMediaController mediaController = new IncubeeMediaController(mContext, anchor);
+		View playerCard = root.findViewById(R.id.player_card);
+
 		if(getVideoUri(position) == null) {
 			textureVideoView.setVisibility(View.GONE);
+			playerCard.setVisibility(View.GONE);
 			return;
 		} else {
 			textureVideoView.setVisibility(View.VISIBLE);
+			playerCard.setVisibility(View.VISIBLE);
 		}
 
 
