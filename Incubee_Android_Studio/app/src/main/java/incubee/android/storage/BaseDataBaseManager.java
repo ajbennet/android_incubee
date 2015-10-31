@@ -16,7 +16,7 @@ public abstract class BaseDataBaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_CONTEXT = "/databases/";
     public static final String LOCAL_DB_PATH = "/Incubee/DB";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public BaseDataBaseManager(Context context, String db_name,
                                CursorFactory factory, int version) {

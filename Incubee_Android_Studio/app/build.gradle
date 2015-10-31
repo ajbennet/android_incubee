@@ -21,14 +21,15 @@ android {
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 6
-        versionName "0.94"
+        versionName "1.0"
         signingConfig signingConfigs.release_config
     }
     buildTypes {
         release {
             debuggable false
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
         }
     }
     productFlavors {

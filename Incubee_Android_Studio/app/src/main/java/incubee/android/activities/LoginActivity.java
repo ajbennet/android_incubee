@@ -81,7 +81,7 @@ public class LoginActivity extends GSConnectionActivity implements
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.e(TAG, "/onUserSignedIninside subscriber: " + e.getMessage());
+                                Log.e(TAG, "/onUserSignedIninside subscriber: " + e.getMessage(), e);
                                 showLoginError();
                             }
 
@@ -117,10 +117,10 @@ public class LoginActivity extends GSConnectionActivity implements
                                 Log.e(TAG, "/signup/inside subscriber: " + "signup onError");
                                 if(e instanceof UserAlreadyCreated) {
                                     Log.d(TAG, "/user already created error");
-                                    login(token);
                                 } else {
                                     showLoginError();
                                 }
+                                login(token);
                             }
 
                             @Override

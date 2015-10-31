@@ -44,7 +44,7 @@ public class SplashActivity extends BaseActivity {
                     EntitlementInterface entitlementDB = DBFactory.getEntitlementDB(getApplicationContext());
                     Entitlement user = entitlementDB.getUserEntitlement(getApplicationContext(), userId);
 
-                    if(!TextUtils.isEmpty(user.getToken())) {
+                    if(user != null && !TextUtils.isEmpty(user.getToken())) {
                         HomeActivity.startActivity(SplashActivity.this);
                         finish();
                         return;
