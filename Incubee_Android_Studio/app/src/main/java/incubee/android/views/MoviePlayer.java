@@ -131,7 +131,7 @@ public class MoviePlayer implements
 			@Override
 			public void onPrepared(MediaPlayer mp) {
                 mVideoView.start();
-                
+
 
                 if (!mVideoView.canSeekForward() || !mVideoView.canSeekBackward()) {
                     mController.setSeekable(false);

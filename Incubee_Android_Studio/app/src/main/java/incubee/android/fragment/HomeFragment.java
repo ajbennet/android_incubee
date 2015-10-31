@@ -148,6 +148,8 @@ public class HomeFragment extends BaseFragment {
                     final int visibleChild = mCardList.getVisibleChildPosition();
                     if(!mIncubeeProfiles.get(visibleChild).isCustomer()){
                         becomeCustomer();
+                    }else{
+                        removeFromCart();
                     }
 
                     break;
@@ -156,6 +158,10 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
+    private void removeFromCart(){
+        final int visibleChild = mCardList.getVisibleChildPosition();
+        mIncubeeProfiles.get(visibleChild).setIsCustomer(false);
+    }
     private void becomeCustomer() {
         final int visibleChild = mCardList.getVisibleChildPosition();
         mIncubeeProfiles.get(visibleChild).setIsCustomer(true);
