@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,39 +17,50 @@
         android:background="@drawable/gradient_blck_to_white">
 
         <TextView
+            android:id="@+id/company_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/company_name"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:textSize="16sp"/>
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/company_founder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/company_founder"
-            android:textColor="@android:color/white"
             android:layout_alignLeft="@id/company_name"
             android:layout_below="@id/company_name"
-            android:textSize="12sp"/>
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentTop="true"
-        android:id="@+id/anchor_view">
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true">
+
 
         <com.sprylab.android.widget.TextureVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:visibility="visible"
-            android:background="@android:color/transparent"/>
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/anchor_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true">
+
+
+        </FrameLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

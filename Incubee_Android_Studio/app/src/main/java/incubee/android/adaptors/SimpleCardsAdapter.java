@@ -1,10 +1,9 @@
 package incubee.android.adaptors;
 
 import android.app.Activity;
-import android.media.MediaPlayer;
 import android.net.Uri;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import incubee.android.R;
 import incubee.android.views.GridImagesAdapter;
 import incubee.android.views.IncubeeMediaController;
+import incubee.android.views.MoviePlayer;
 import services.models.IncubeeProfile;
 import stackedlist.view.CardStackAdapter;
 
@@ -42,18 +42,17 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 
 
 	@Override
-	protected View getCardView(int position, IncubeeProfile model, View convertView,
+	protected View getCardView(int position, final IncubeeProfile model, View convertView,
 			ViewGroup parent) {
 		if(convertView == null){
 			convertView = mInflator.inflate(R.layout.card, parent, false);
 		}
 
 		RecyclerView recyclerView = (RecyclerView)convertView.findViewById(R.id.recycler_view);
-		recyclerView.setHasFixedSize(true);
+		recyclerView.setHasFixedSize(false);
 
-		StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2,
-				StaggeredGridLayoutManager.VERTICAL);
-		recyclerView.setLayoutManager(gridLayoutManager);
+		GridLayoutManager manager = new GridLayoutManager(mContext, 2);
+		recyclerView.setLayoutManager(manager);
 
 
         View anchor = convertView.findViewById(R.id.anchor_view);
@@ -69,12 +68,12 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 
 
 		TextureVideoView textureVideoView = (TextureVideoView) convertView.findViewById(R.id.video_view);
-		initVideoView(textureVideoView, anchor, position);
+		initVideoView(convertView, textureVideoView, anchor, position);
 
 		return convertView;
 	}
 
-	private void initVideoView(final TextureVideoView textureVideoView, final View anchor, int position) {
+	private void initVideoView(final View root, final TextureVideoView textureVideoView, final View anchor, int position) {
 		final IncubeeMediaController mediaController = new IncubeeMediaController(mContext, anchor);
 		if(getVideoUri(position) == null) {
 			textureVideoView.setVisibility(View.GONE);
@@ -82,23 +81,11 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 		} else {
 			textureVideoView.setVisibility(View.VISIBLE);
 		}
-		textureVideoView.setVideoURI(getVideoUri(position));
-     	textureVideoView.setMediaController(mediaController);
-
-		textureVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-			@Override
-			public void onPrepared(MediaPlayer mp) {
-				textureVideoView.start();
-				textureVideoView.seekTo(100);
-				mediaController.show();
-				textureVideoView.pause();
-
-			}
-		});
 
 
-
-
+		MoviePlayer player = new MoviePlayer(anchor, mContext,
+		getVideoUri(position), true,
+		textureVideoView);
 	}
 
 	private void startVideoPlayback(TextureVideoView textureVideoView) {
