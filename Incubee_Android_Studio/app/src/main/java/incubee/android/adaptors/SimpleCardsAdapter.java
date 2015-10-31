@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.sprylab.android.widget.TextureVideoView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import incubee.android.R;
 import incubee.android.views.GridImagesAdapter;
@@ -41,18 +42,29 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
 	private LayoutInflater mInflator;
 
 
+
+
 	@Override
 	protected View getCardView(int position, final IncubeeProfile model, View convertView,
 			ViewGroup parent) {
+
 		if(convertView == null){
 			convertView = mInflator.inflate(R.layout.card, parent, false);
+		}
+
+
+        List<String> imageUrls = mIncubeeProfileList.get(position).getImages();
+
+        int spanCount = 1;
+		if(imageUrls != null &&imageUrls.size() >3){
+			spanCount = 2;
 		}
 
 		RecyclerView recyclerView = (RecyclerView)convertView.findViewById(R.id.recycler_view);
 		recyclerView.setHasFixedSize(false);
 
-		GridLayoutManager manager = new GridLayoutManager(mContext, 2);
-		recyclerView.setLayoutManager(manager);
+        GridLayoutManager manager = new GridLayoutManager(mContext, spanCount);
+        recyclerView.setLayoutManager(manager);
 
 
         View anchor = convertView.findViewById(R.id.anchor_view);
@@ -63,7 +75,7 @@ public class SimpleCardsAdapter extends CardStackAdapter<IncubeeProfile> {
         companyFounder.setText(mIncubeeProfileList.get(position).getFounder());
 
 
-		GridImagesAdapter rcAdapter = new GridImagesAdapter(mContext, mIncubeeProfileList.get(position).getImages());
+		GridImagesAdapter rcAdapter = new GridImagesAdapter(mContext, imageUrls);
 		recyclerView.setAdapter(rcAdapter);
 
 

@@ -52,7 +52,7 @@ public class MoviePlayer implements
     private final View mRootView;
     private final Uri mUri;
     private final Handler mHandler = new Handler();
-    private final AudioBecomingNoisyReceiver mAudioBecomingNoisyReceiver;
+//    private final AudioBecomingNoisyReceiver mAudioBecomingNoisyReceiver;
     private final MovieControllerOverlay mController;
     private long mResumeableTime = Long.MAX_VALUE;
     private int mVideoPosition = 0;
@@ -122,8 +122,8 @@ public class MoviePlayer implements
             }
         }, BLACK_TIMEOUT);
 
-        mAudioBecomingNoisyReceiver = new AudioBecomingNoisyReceiver();
-        mAudioBecomingNoisyReceiver.register();
+//        mAudioBecomingNoisyReceiver = new AudioBecomingNoisyReceiver();
+//        mAudioBecomingNoisyReceiver.register();
 
 
 
@@ -175,7 +175,7 @@ public class MoviePlayer implements
 
     public void onDestroy() {
         mVideoView.stopPlayback();
-        mAudioBecomingNoisyReceiver.unregister();
+//        mAudioBecomingNoisyReceiver.unregister();
     }
 
     // This updates the time bar display (if necessary). It is called every
