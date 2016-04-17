@@ -23,6 +23,12 @@ class Service {
                         request.addHeader("Content-Type", "application/json");
                     }
                 })
+                .setLog(new RestAdapter.Log() {
+                    @Override
+                    public void log(String message) {
+                        System.out.println(message);
+                    }
+                })
                 .setErrorHandler(errorHandler);
         if(client == null) {
             builder.setClient(new DefaultClient());

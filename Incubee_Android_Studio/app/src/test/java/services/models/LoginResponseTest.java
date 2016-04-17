@@ -16,8 +16,9 @@ public class LoginResponseTest {
     private final String statusMsg = "statusMessage";
     private final String statusCode = "400";
     private final String companyID = "company_id";
+    private final String userType = "I";
 
-    private ServiceData serviceData = new ServiceData(companyID);
+    private ServiceData serviceData = new ServiceData(companyID, userType);
 
     @Before
     public void setup() {

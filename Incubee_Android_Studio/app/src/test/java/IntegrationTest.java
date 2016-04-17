@@ -48,6 +48,7 @@ public class IntegrationTest {
         System.out.println("StatusCode: "+loginResponse.getStatusCode());
         System.out.println("StatusMessage: "+loginResponse.getStatusMessage());
         System.out.println("Company_Id: "+loginResponse.getServicedata().getCompany_id());
+        System.out.println("UserType: "+loginResponse.getServicedata().getUserType());
     }
 
     @Ignore

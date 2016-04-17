@@ -28,7 +28,7 @@ public class UserServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         // String jsonResponse ="{\"statusMessage\":\"Success\",\"statusCode\":\"LOG_1000\",\"servicedata\":{\"company_id\":\"inc_952745e0-ea2e-4365-83b3-cd379072ce57\\n\"}}";
-        Observable<LoginResponse> loginResponseObservable = Observable.just(new LoginResponse("Success", "LOG_1000", new ServiceData("inc_952745e0-ea2e-4365-83b3-cd379072ce57")));
+        Observable<LoginResponse> loginResponseObservable = Observable.just(new LoginResponse("Success", "LOG_1000", new ServiceData("inc_952745e0-ea2e-4365-83b3-cd379072ce57", "I")));
         when(mUserService.login(Matchers.<String>any(),Matchers.<String>any(),Matchers.<String>any(),Matchers.<String>any(),Matchers.<String>any())).thenReturn(loginResponseObservable);
     }
 
