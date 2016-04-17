@@ -16,7 +16,7 @@ class Service {
     static IHitRESTEndpoints getService(Client client, final String baseApiURL, ErrorHandler errorHandler) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseApiURL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
@@ -41,7 +41,7 @@ class Service {
     static IHitRESTEndpoints getServiceWithNoInterceptor(Client client, final String baseURL, ErrorHandler errorHandler) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseURL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .setLog(new RestAdapter.Log() {
                     @Override
                     public void log(String message) {
@@ -71,7 +71,7 @@ class Service {
     static IHitRESTEndpoints getServiceWithNoInterceptorButHeader(Client client, final String baseURL, ErrorHandler errorHandler, final String authToken) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseURL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {

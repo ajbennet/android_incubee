@@ -9,6 +9,7 @@ import incubee.android.storage.DBFactory;
 import incubee.android.storage.EntitlementInterface;
 import incubee.android.storage.PrefManager;
 import incubee.android.storage.model.Entitlement;
+import incubee.android.views.SecretTextView;
 
 
 /**
@@ -25,6 +26,13 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
+        SecretTextView logoText = (SecretTextView) findViewById(R.id.splash_logo_text);
+        logoText.setDuration(3500);
+        logoText.hide();
+
+        SecretTextView secText = (SecretTextView) findViewById(R.id.logo_sec);
+        secText.setDuration(3000);
+        secText.hide();
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -36,7 +44,7 @@ public class SplashActivity extends BaseActivity {
                     EntitlementInterface entitlementDB = DBFactory.getEntitlementDB(getApplicationContext());
                     Entitlement user = entitlementDB.getUserEntitlement(getApplicationContext(), userId);
 
-                    if(!TextUtils.isEmpty(user.getToken())) {
+                    if(user != null && !TextUtils.isEmpty(user.getToken())) {
                         HomeActivity.startActivity(SplashActivity.this);
                         finish();
                         return;
@@ -52,7 +60,7 @@ public class SplashActivity extends BaseActivity {
                 finish();
 
             }
-        }, 1000L);
+        }, 3000L);
 
 
     }

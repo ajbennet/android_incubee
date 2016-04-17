@@ -9,9 +9,14 @@
     <incubee.android.views.SlidingTabLayout
         android:id="@+id/messages_pager_tab_strip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentTop="true"
-        android:background="@color/dark_gray" />
+        android:background="@drawable/curve_green_stroke"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        />
 
     <incubee.android.views.TabsFragmentPager
         android:id="@+id/messages_pager"

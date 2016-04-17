@@ -46,9 +46,10 @@ public class GridImagesAdapter extends RecyclerView.Adapter<GridImagesAdapter.Gr
 
     @Override
     public int getItemCount() {
-        if (imageURLs == null) {
-            return 4;
+        if (imageURLs == null || (imageURLs.size() <= 3)) {
+            return 1;
         }
+
         return this.imageURLs.size();
     }
 
