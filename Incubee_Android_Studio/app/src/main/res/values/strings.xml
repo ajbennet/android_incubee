@@ -23,4 +23,7 @@
     <string name="saved_projects">Saved Projects</string>
     <string name="customers">Customers</string>
     <string name="others">Others</string>
+    <string name="search_companies_hint">Project | Founder | Concept | Email</string>
+    <string name="add">Add</string>
+    <string name="invite">Invite</string>
 </resources>

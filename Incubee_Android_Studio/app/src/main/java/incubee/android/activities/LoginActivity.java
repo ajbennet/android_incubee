@@ -183,6 +183,7 @@ public class LoginActivity extends GSConnectionActivity implements
 
 
                                     navigateNextScreen();
+                                    return;
                                 } else {
                                     Log.e(TAG, "loginResponse is null");
                                 }
@@ -197,8 +198,9 @@ public class LoginActivity extends GSConnectionActivity implements
     private void navigateNextScreen() {
 
         HomeActivity.startActivity(this);
+//        CompanyProfileActivity.startActivity(this);
 
-        finish();
+        finish();   
     }
 
 

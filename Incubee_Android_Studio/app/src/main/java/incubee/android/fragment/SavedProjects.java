@@ -28,7 +28,7 @@ import services.models.IncubeeProfile;
  */
 public class SavedProjects extends BaseFragment {
 
-    private static final String TAG = "SavedProjects";
+    public static final String TAG = "SavedProjects";
     private ListView mProjectListView;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();
     private List<IncubeeProfile> mLikedIncubeeProfileList;
