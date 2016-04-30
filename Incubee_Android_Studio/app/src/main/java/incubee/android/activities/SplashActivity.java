@@ -45,6 +45,11 @@ public class SplashActivity extends BaseActivity {
                     Entitlement user = entitlementDB.getUserEntitlement(getApplicationContext(), userId);
 
                     if(user != null && !TextUtils.isEmpty(user.getToken())) {
+                        if(user.getUserType() != null && user.getUserType() == UserType.I) {
+                            CompanyProfileActivity.startActivity(SplashActivity.this);
+                            finish();
+                            return;
+                        }
                         HomeActivity.startActivity(SplashActivity.this);
                         finish();
                         return;

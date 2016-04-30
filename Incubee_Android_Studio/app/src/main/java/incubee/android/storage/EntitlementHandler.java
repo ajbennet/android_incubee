@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import incubee.android.activities.UserType;
 import incubee.android.storage.EntitlementDBManager.TABLE_Entitlement;
 import incubee.android.storage.model.Entitlement;
 
@@ -95,7 +96,8 @@ public class EntitlementHandler implements EntitlementInterface {
                         TABLE_Entitlement.FIELD_UID,
                         TABLE_Entitlement.FIELD_COMPANY_ID,
                         TABLE_Entitlement.FIELD_EMAIL_ID,
-                        TABLE_Entitlement.FIELD_TOKEN
+                        TABLE_Entitlement.FIELD_TOKEN,
+                        TABLE_Entitlement.FIELD_USER_TYPE
                 },
                 whereClause,
                 new String[] { uid },
@@ -117,6 +119,7 @@ public class EntitlementHandler implements EntitlementInterface {
             String emailID = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_EMAIL_ID));
             String displayName = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_DNAME));
             String token = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_TOKEN));
+            String userType = cursor.getString(cursor.getColumnIndex(TABLE_Entitlement.FIELD_USER_TYPE));
 
 
             entitlement = new Entitlement();
@@ -125,6 +128,7 @@ public class EntitlementHandler implements EntitlementInterface {
             entitlement.setDisplayName(displayName);
             entitlement.setEmailId(emailID);
             entitlement.setToken(token);
+            entitlement.setUserType(UserType.valueOf(userType));
 
 
         }
@@ -164,6 +168,7 @@ public class EntitlementHandler implements EntitlementInterface {
             values.put(TABLE_Entitlement.FIELD_DNAME, data.getDisplayName());
             values.put(TABLE_Entitlement.FIELD_DATE, System.currentTimeMillis());
             values.put(TABLE_Entitlement.FIELD_TOKEN, data.getToken());
+            values.put(TABLE_Entitlement.FIELD_USER_TYPE, data.getUserType().toString());
 
             rowsUpdated = sqliteDb.replace(TABLE_Entitlement.TBL_NAME, null, values);
 

@@ -173,6 +173,8 @@ public class LoginActivity extends GSConnectionActivity implements
 
                                     if (loginResponse.getServicedata() != null) {
                                         entitlement.setCompanyId(loginResponse.getServicedata().getCompany_id());
+                                        entitlement.setUserType(loginResponse.getServicedata().getUserType() == null ?
+                                                null : UserType.valueOf(loginResponse.getServicedata().getUserType()));
                                         // write data to Preference :: this will read the next time user
                                         // logs in and chooses the same account
                                         PrefManager.setIncubeeID(getApplicationContext(),
@@ -182,7 +184,7 @@ public class LoginActivity extends GSConnectionActivity implements
                                     entitlementsDB.saveEntitlement(getApplicationContext(), entitlement);
 
 
-                                    navigateNextScreen();
+                                    navigateNextScreen(loginResponse);
                                     return;
                                 } else {
                                     Log.e(TAG, "loginResponse is null");
@@ -195,10 +197,24 @@ public class LoginActivity extends GSConnectionActivity implements
     }
 
 
-    private void navigateNextScreen() {
+    private void navigateNextScreen(LoginResponse loginResponse) {
 
-        HomeActivity.startActivity(this);
-//        CompanyProfileActivity.startActivity(this);
+        if(loginResponse.getServicedata() != null) {
+            String userType = loginResponse.getServicedata().getUserType();
+            if(userType == null) {
+                //we assume its a user.
+                HomeActivity.startActivity(this);
+                return;
+            }
+
+            //for investor.
+            if(userType.equals(UserType.I.toString())) {
+                CompanyProfileActivity.startActivity(this);
+                return;
+            }
+            //for founder and user
+            HomeActivity.startActivity(this);
+        }
 
         finish();   
     }

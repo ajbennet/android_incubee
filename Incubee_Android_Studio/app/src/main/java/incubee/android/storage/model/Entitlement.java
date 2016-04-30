@@ -3,6 +3,8 @@ package incubee.android.storage.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import incubee.android.activities.UserType;
+
 /**
  * Created by samuh on 10/18/2015.
  */
@@ -13,6 +15,7 @@ public class Entitlement implements Parcelable {
     private String mCompanyId;
     private String mEmailId;
     private String mToken;
+    private UserType mUserType;
 
 
     @Override
@@ -27,6 +30,7 @@ public class Entitlement implements Parcelable {
         pc.writeString(mCompanyId);
         pc.writeString(mEmailId);
         pc.writeString(mToken);
+        pc.writeString(mUserType.toString());
     }
 
     public Entitlement() {
@@ -42,6 +46,7 @@ public class Entitlement implements Parcelable {
         mCompanyId = pc.readString();
         mEmailId = pc.readString();
         mToken = pc.readString();
+        mUserType = UserType.valueOf(pc.readString());
     }
 
     /**
@@ -97,5 +102,14 @@ public class Entitlement implements Parcelable {
 
     public void setToken(String mToken) {
         this.mToken = mToken;
+    }
+
+
+    public UserType getUserType() {
+        return mUserType;
+    }
+
+    public void setUserType(UserType mUserType) {
+        this.mUserType = mUserType;
     }
 }
